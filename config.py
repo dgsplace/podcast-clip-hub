@@ -91,6 +91,19 @@ YOUTUBE_CHANNELS = [
 
 # Keywords that always trigger a clip (case-insensitive)
 KEYWORD_TOPICS = [
+    # ── Topics ──
+    "media rights deal",
+    "content distribution",
+    "direct to consumer",
+    "sports media landscape",
+    "production company",
+    "streaming partner",
+    "brand partnership",
+    "digital content strategy",
+    "owning your content",
+    "sports storytelling",
+
+    # ── Platforms & networks ──
     "media rights",
     "streaming",
     "ESPN",
@@ -102,6 +115,13 @@ KEYWORD_TOPICS = [
     "Fox Sports",
     "CBS Sports",
     "TNT",
+    "Peacock",
+    "Max",
+    "Paramount",
+    "Disney",
+    "Spotify",
+
+    # ── Leagues & business ──
     "NBA",
     "NFL",
     "MLB",
@@ -115,12 +135,29 @@ KEYWORD_TOPICS = [
     "ratings",
     "viewership",
     "rights deal",
-    "Peacock",
-    "Max",
-    "Paramount",
-    "Disney",
-    "Spotify",
     "podcast",
+
+    # ── People ──
+    "Peyton Manning",
+    "Jamie Horowitz",
+    "Connor Schell",
+    "Michael Rubin",
+    "Burke Magnus",
+    "Jimmy Pitaro",
+    "Roger Goodell",
+    "Jessica Berman",
+    "Adam Silver",
+    "Gary Bettman",
+    "Rob Manfred",
+    "Noah Garden",
+    "Nick Khan",
+    "Pat McAfee",
+    "Ross Ketover",
+    "Keith Cossrow",
+    "Lindsay Rovegno",
+    "Nick Parsons",
+    "Brian Lockhart",
+    "Marcia Cooke",
 ]
 
 # AI also autonomously finds compelling clips beyond keywords
@@ -152,7 +189,7 @@ Only return clips with quality_score >= 7. Return as JSON array.
 # ─────────────────────────────────────────────────────────────────────────────
 
 # How many days back to look for new episodes
-LOOKBACK_DAYS = 5
+LOOKBACK_DAYS = 1
 
 # Max episode duration to process (minutes) — skip very long episodes to control costs
 MAX_EPISODE_MINUTES = 90
