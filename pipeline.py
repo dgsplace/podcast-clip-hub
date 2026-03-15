@@ -276,7 +276,7 @@ def transcribe(audio_path):
         transcript = transcriber.transcribe(
             audio_path,
             config=aai.TranscriptionConfig(
-                speech_model=aai.SpeechModel.best,
+                speech_models=aai.SpeechModel.best,
                 speaker_labels=True,
                 auto_highlights=True,
             )
