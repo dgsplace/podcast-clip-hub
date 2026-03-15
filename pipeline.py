@@ -272,13 +272,14 @@ def transcribe(audio_path):
     """Transcribe audio with AssemblyAI. Returns transcript object or None."""
     log.info("  Transcribing with AssemblyAI...")
     try:
-       transcript = transcriber.transcribe(
-    audio_path,
-    config=aai.TranscriptionConfig(
-        speaker_labels=True,
-        auto_highlights=True,
-    )
-)
+        transcriber = aai.Transcriber()
+        transcript = transcriber.transcribe(
+            audio_path,
+            config=aai.TranscriptionConfig(
+                speaker_labels=True,
+                auto_highlights=True,
+            )
+        )
         if transcript.status == aai.TranscriptStatus.error:
             log.warning("  Transcription error: %s", transcript.error)
             return None
