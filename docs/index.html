@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Clip Desk — Sports Media</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#0d0d0d;--paper:#f5f0e8;--cream:#ede7d9;--rust:#c0392b;--gold:#b8860b;--muted:#6b6560;--rule:#c8bfb0;--highlight:#fff3cd;--card-bg:#ffffff;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
+  .masthead{background:var(--ink);color:var(--paper);padding:28px 40px 20px;border-bottom:4px solid var(--rust)}
+  .masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .masthead-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-1px;line-height:1}
+  .masthead-title span{color:var(--rust);font-style:italic}
+  .masthead-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#aaa;text-align:right;line-height:1.8}
+  .masthead-rule{border:none;border-top:1px solid #333;margin:14px auto 0;max-width:1280px}
+  .controls{background:var(--cream);border-bottom:1px solid var(--rule);padding:12px 40px;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+  .controls-inner{max-width:1280px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .filter-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--muted);white-space:nowrap}
+  .filter-pills{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+  .pill{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border:1px solid var(--rule);background:white;color:var(--muted);border-radius:2px;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .pill:hover{border-color:var(--ink);color:var(--ink)}
+  .pill.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .sort-select{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 8px;border:1px solid var(--rule);background:white;color:var(--ink);border-radius:2px;cursor:pointer;outline:none;margin-left:auto}
+  .search-input{font-family:'DM Sans',sans-serif;font-size:13px;padding:5px 12px;border:1px solid var(--rule);background:white;color:var(--ink);border-radius:2px;outline:none;width:200px}
+  .search-input:focus{border-color:var(--ink)}
+  .main{max-width:1280px;margin:0 auto;padding:32px 40px}
+  .section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:24px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+  .section-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700}
+  .section-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .clip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .clip-card{background:var(--card-bg);padding:20px;display:flex;flex-direction:column;gap:10px;transition:background .15s;cursor:pointer;position:relative}
+  .clip-card:hover{background:#fafaf8}
+  .clip-card.playing{background:var(--highlight)}
+  .clip-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .podcast-name{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--rust);line-height:1.2}
+  .clip-date{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);white-space:nowrap}
+  .clip-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;line-height:1.3;color:var(--ink)}
+  .clip-summary{font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .clip-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;background:var(--cream);color:var(--muted);border-radius:2px;text-transform:lowercase;letter-spacing:.3px}
+  .clip-footer{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid var(--rule)}
+  .play-btn{display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;color:var(--ink);background:none;border:1px solid var(--ink);padding:5px 12px;cursor:pointer;border-radius:2px;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
+  .play-btn:hover,.play-btn.active{background:var(--ink);color:var(--paper)}
+  .clip-duration{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)}
+  .rating-wrap{margin-left:auto;display:flex;gap:3px;align-items:center}
+  .star{font-size:13px;color:var(--rule);cursor:pointer;transition:color .1s;line-height:1}
+  .star:hover,.star.lit{color:var(--gold)}
+  .now-playing{position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:var(--paper);padding:14px 40px;display:none;align-items:center;gap:20px;z-index:200;border-top:3px solid var(--rust)}
+  .now-playing.visible{display:flex}
+  .np-info{flex:1;min-width:0}
+  .np-podcast{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--rust);text-transform:uppercase;letter-spacing:1px}
+  .np-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .np-controls{display:flex;gap:12px;align-items:center}
+  .np-btn{background:none;border:1px solid #444;color:var(--paper);padding:6px 14px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;border-radius:2px;transition:border-color .15s;text-transform:uppercase;letter-spacing:.5px}
+  .np-btn:hover{border-color:var(--paper)}
+  .np-progress{flex:1;max-width:300px;height:3px;background:#333;border-radius:1px;cursor:pointer;position:relative}
+  .np-progress-fill{height:100%;background:var(--rust);border-radius:1px;width:0%;transition:width .5s linear}
+  .np-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;white-space:nowrap}
+  .np-close{background:none;border:none;color:#666;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1}
+  .np-close:hover{color:var(--paper)}
+  .empty{text-align:center;padding:80px 20px;color:var(--muted)}
+  .empty-headline{font-family:'Playfair Display',serif;font-size:1.8rem;font-style:italic;margin-bottom:12px;color:var(--ink)}
+  .empty-sub{font-family:'IBM Plex Mono',monospace;font-size:12px}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .clip-card{animation:fadeUp .3s ease both}
+  @media(max-width:700px){.masthead,.controls,.main{padding-left:16px;padding-right:16px}.clip-grid{grid-template-columns:1fr}.now-playing{padding:12px 16px;flex-wrap:wrap}.np-progress{display:none}.search-input{width:140px}}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <div class="masthead-title">The Clip <span>Desk</span></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;margin-top:4px;letter-spacing:1px;">SPORTS MEDIA — AUDIO CLIPS</div>
+    </div>
+    <div class="masthead-meta" id="meta-date">Loading...</div>
+  </div>
+  <hr class="masthead-rule">
+</header>
+<div class="controls">
+  <div class="controls-inner">
+    <span class="filter-label">Topics</span>
+    <div class="filter-pills" id="topic-pills"><button class="pill active" data-topic="all">All</button></div>
+    <input type="text" class="search-input" id="search" placeholder="Search clips…">
+    <select class="sort-select" id="sort-select"><option value="newest">Newest</option><option value="quality">Top Rated</option><option value="oldest">Oldest</option></select>
+  </div>
+</div>
+<main class="main">
+  <div class="section-header">
+    <span class="section-title">Latest Clips</span>
+    <span class="section-count" id="clip-count">—</span>
+  </div>
+  <div class="clip-grid" id="clip-grid">
+    <div class="empty" style="grid-column:1/-1;border:none;">
+      <div class="empty-headline">No clips yet.</div>
+      <div class="empty-sub">Run the pipeline to get started.</div>
+    </div>
+  </div>
+</main>
+<div class="now-playing" id="now-playing">
+  <div class="np-info">
+    <div class="np-podcast" id="np-podcast">—</div>
+    <div class="np-title" id="np-title">—</div>
+  </div>
+  <div class="np-controls">
+    <div class="np-progress" id="np-progress"><div class="np-progress-fill" id="np-fill"></div></div>
+    <span class="np-time" id="np-time">0:00 / 0:00</span>
+    <button class="np-btn" id="np-playpause">⏸ Pause</button>
+    <button class="np-close" id="np-close">✕</button>
+  </div>
+</div>
+<audio id="audio-player" preload="none"></audio>
+<script>
+let allClips=[],activeTopic='all',activeSort='newest',searchQuery='',currentClipId=null;
+const audio=document.getElementById('audio-player');
+async function loadClips(){try{const r=await fetch('clips.json?'+Date.now());if(!r.ok)throw new Error();allClips=await r.json()}catch(e){allClips=[]}buildTopicPills();render();updateMeta()}
+function updateMeta(){const el=document.getElementById('meta-date');const now=new Date();el.innerHTML=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'<br>'+allClips.length+' CLIPS ARCHIVED'}
+function buildTopicPills(){const tc={};allClips.forEach(c=>(c.topics||[]).forEach(t=>{tc[t]=(tc[t]||0)+1}));const sorted=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([t])=>t);const con=document.getElementById('topic-pills');con.innerHTML='<button class="pill active" data-topic="all">All</button>';sorted.forEach(t=>{const b=document.createElement('button');b.className='pill';b.dataset.topic=t;b.textContent=t;con.appendChild(b)});con.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;activeTopic=b.dataset.topic;con.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));b.classList.add('active');render()})}
+function filteredClips(){let c=[...allClips];if(activeTopic!=='all')c=c.filter(x=>(x.topics||[]).includes(activeTopic));if(searchQuery){const q=searchQuery.toLowerCase();c=c.filter(x=>(x.title||'').toLowerCase().includes(q)||(x.summary||'').toLowerCase().includes(q)||(x.podcast||'').toLowerCase().includes(q)||(x.people||[]).some(p=>p.toLowerCase().includes(q)))}if(activeSort==='newest')c.sort((a,b)=>new Date(b.published)-new Date(a.published));else if(activeSort==='oldest')c.sort((a,b)=>new Date(a.published)-new Date(b.published));else if(activeSort==='quality')c.sort((a,b)=>(b.quality||0)-(a.quality||0));return c}
+function render(){const clips=filteredClips();const grid=document.getElementById('clip-grid');document.getElementById('clip-count').textContent=clips.length+' clip'+(clips.length!==1?'s':'');if(!clips.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1;border:none;"><div class="empty-headline">Nothing found.</div><div class="empty-sub">Try a different filter or search.</div></div>';return}grid.innerHTML=clips.map((c,i)=>clipCard(c,i)).join('');grid.querySelectorAll('.play-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();playClip(b.closest('.clip-card').dataset.id)}));grid.querySelectorAll('.star').forEach(s=>s.addEventListener('click',e=>{e.stopPropagation();rateClip(s.closest('.clip-card').dataset.id,parseInt(s.dataset.val))}));if(currentClipId){const card=grid.querySelector('[data-id="'+currentClipId+'"]');if(card){card.classList.add('playing');const pb=card.querySelector('.play-btn');pb.classList.add('active');pb.innerHTML='⏸ Playing'}}}
+function fmt(s){s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function fmtDate(iso){if(!iso)return'';const d=new Date(iso);return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+function clipCard(c,i){const avg=c.avg_rating||0;const stars=[1,2,3,4,5].map(n=>'<span class="star '+(n<=avg?'lit':'')+'" data-val="'+n+'">★</span>').join('');const tags=(c.topics||[]).slice(0,3).map(t=>'<span class="tag">'+t+'</span>').join('');const people=(c.people||[]).slice(0,3).map(p=>'<span class="tag" style="background:#f0e8d8;color:#7a6a5a;">'+p+'</span>').join('');return'<div class="clip-card" data-id="'+c.id+'" style="animation-delay:'+i*40+'ms"><div class="clip-card-top"><div class="podcast-name">'+(c.podcast||'')+'</div><div class="clip-date">'+fmtDate(c.published)+'</div></div><div class="clip-title">'+(c.title||'Untitled')+'</div><div class="clip-summary">'+(c.summary||'')+'</div><div class="clip-tags">'+tags+people+'</div><div class="clip-footer"><button class="play-btn"><span>▶</span> Play</button><span class="clip-duration">'+fmt(c.duration)+'</span><div class="rating-wrap">'+stars+'</div></div></div>'}
+function playClip(id){const clip=allClips.find(c=>c.id===id);if(!clip)return;if(currentClipId===id&&!audio.paused){audio.pause();return}currentClipId=id;audio.src=clip.audio_url;audio.play().catch(()=>{});document.getElementById('np-podcast').textContent=clip.podcast||'';document.getElementById('np-title').textContent=clip.title||'';document.getElementById('now-playing').classList.add('visible');document.getElementById('np-playpause').textContent='⏸ Pause';render()}
+audio.addEventListener('timeupdate',()=>{const p=audio.duration?(audio.currentTime/audio.duration*100):0;document.getElementById('np-fill').style.width=p+'%';document.getElementById('np-time').textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)});
+audio.addEventListener('ended',()=>{currentClipId=null;render()});
+audio.addEventListener('pause',()=>document.getElementById('np-playpause').textContent='▶ Play');
+audio.addEventListener('play',()=>document.getElementById('np-playpause').textContent='⏸ Pause');
+document.getElementById('np-playpause').addEventListener('click',()=>audio.paused?audio.play():audio.pause());
+document.getElementById('np-close').addEventListener('click',()=>{audio.pause();audio.src='';currentClipId=null;document.getElementById('now-playing').classList.remove('visible');render()});
+document.getElementById('np-progress').addEventListener('click',e=>{if(!audio.duration)return;const r=e.currentTarget.getBoundingClientRect();audio.currentTime=(e.clientX-r.left)/r.width*audio.duration});
+document.getElementById('search').addEventListener('input',e=>{searchQuery=e.target.value.trim();render()});
+document.getElementById('sort-select').addEventListener('change',e=>{activeSort=e.target.value;render()});
+function rateClip(id,val){const ratings=JSON.parse(localStorage.getItem('clip_ratings')||'{}');ratings[id]=val;localStorage.setItem('clip_ratings',JSON.stringify(ratings));const clip=allClips.find(c=>c.id===id);if(clip)clip.avg_rating=val;render()}
+loadClips();
+</script>
+</body>
+</html>
