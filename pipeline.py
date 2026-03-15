@@ -295,49 +295,94 @@ def transcribe(audio_path):
 #  Clip detection
 # ─────────────────────────────────────────────────────────────────────────────
 
+def extract_snippet(words, match_time_ms, context_words=25):
+    """
+    Extract ~50 words around a keyword match time.
+    Returns dict with plain text and the matched keyword char offset.
+    """
+    # Find word index closest to match time
+    best_idx = 0
+    best_diff = float("inf")
+    for i, w in enumerate(words):
+        diff = abs(w.start - match_time_ms)
+        if diff < best_diff:
+            best_diff = diff
+            best_idx = i
+
+    start_idx = max(0, best_idx - context_words)
+    end_idx   = min(len(words), best_idx + context_words)
+    snippet_words = words[start_idx:end_idx]
+
+    # Build plain text + find highlight offset
+    text = " ".join(w.text for w in snippet_words)
+    # Highlight offset = char position of the matched word within snippet
+    pre_text = " ".join(w.text for w in snippet_words[:best_idx - start_idx])
+    highlight_start = len(pre_text) + (1 if pre_text else 0)
+    matched_word = words[best_idx].text if best_idx < len(words) else ""
+
+    return {
+        "text":            text,
+        "highlight_start": highlight_start,
+        "highlight_len":   len(matched_word),
+    }
+
+
 def find_keyword_clips(transcript, episode):
-    """Find transcript segments containing keyword topics."""
+    """
+    Find transcript segments containing keyword topics.
+    Each clip is exactly 20s before + 30s after the keyword match (50s total).
+    """
     if not transcript.words:
         return []
 
     keywords = [k.lower() for k in config.KEYWORD_TOPICS]
-    clips = []
-
-    # Group words into sentences/segments
-    words = transcript.words
-    window = 60  # seconds around keyword hit
-
+    words    = transcript.words
+    clips    = []
     found_times = set()
-    for word in words:
-        if any(kw in word.text.lower() for kw in keywords):
-            start = max(0, (word.start / 1000) - 10)
-            end = start + window
-            # Avoid overlapping clips
-            rounded = int(start / 30) * 30
-            if rounded in found_times:
-                continue
-            found_times.add(rounded)
 
-            # Extract transcript text for this window
-            window_text = " ".join(
-                w.text for w in words
-                if start * 1000 <= w.start <= end * 1000
-            )
-            # Find which keyword matched
+    for word in words:
+        word_text_lower = word.text.lower()
+        matched_kw = next(
+            (kw for kw in config.KEYWORD_TOPICS if kw.lower() in word_text_lower),
+            None
+        )
+        if not matched_kw:
+            # Also check multi-word keywords spanning this word
             matched_kw = next(
                 (kw for kw in config.KEYWORD_TOPICS
-                 if kw.lower() in word.text.lower()), "sports")
+                 if len(kw.split()) > 1 and kw.lower() in
+                 " ".join(w.text for w in words[max(0,words.index(word)-3):words.index(word)+3]).lower()),
+                None
+            )
+        if not matched_kw:
+            continue
 
-            clips.append({
-                "start_time": start,
-                "end_time":   min(end, (words[-1].end / 1000)),
-                "title":      f"{matched_kw.title()} — {episode['podcast']}",
-                "summary":    window_text[:200],
-                "topics":     [matched_kw],
-                "people":     [],
-                "quality_score": 7,
-                "source":     "keyword",
-            })
+        match_sec = word.start / 1000
+        start     = max(0, match_sec - 20)   # 20 seconds before
+        end       = match_sec + 30             # 30 seconds after
+        end       = min(end, words[-1].end / 1000)
+
+        # Deduplicate — skip if we already have a clip within 25s
+        bucket = int(match_sec / 25) * 25
+        if bucket in found_times:
+            continue
+        found_times.add(bucket)
+
+        # ~50-word snippet centred on the match
+        snippet = extract_snippet(words, word.start, context_words=25)
+
+        clips.append({
+            "start_time":      start,
+            "end_time":        end,
+            "title":           f"{matched_kw.title()} — {episode['podcast']}",
+            "summary":         snippet["text"][:300],
+            "transcript_snippet": snippet,
+            "matched_keyword": matched_kw,
+            "topics":          [matched_kw],
+            "people":          [],
+            "quality_score":   7,
+            "source":          "keyword",
+        })
 
     return clips[:config.MAX_CLIPS_PER_EPISODE]
 
@@ -513,21 +558,25 @@ def process_episode(episode, seen):
             # Collect people mentioned in transcript around the clip
             all_people = list(set(clip.get("people", [])))
 
+            clip_id = f"{ep_id}_{i}"
             records.append({
-                "id":          f"{ep_id}_{i}",
-                "podcast":     episode["podcast"],
-                "episode":     episode["title"],
-                "published":   episode["published"],
-                "title":       clip["title"],
-                "summary":     clip["summary"],
-                "topics":      clip.get("topics", []),
-                "people":      all_people,
-                "audio_url":   clip_url,
-                "start_time":  clip["start_time"],
-                "duration":    clip["end_time"] - clip["start_time"],
-                "quality":     clip.get("quality_score", 7),
-                "ratings":     [],
-                "avg_rating":  0,
+                "id":                 clip_id,
+                "podcast":            episode["podcast"],
+                "episode":            episode["title"],
+                "episode_url":        episode.get("audio_url", ""),
+                "published":          episode["published"],
+                "title":              clip["title"],
+                "summary":            clip["summary"],
+                "transcript_snippet": clip.get("transcript_snippet", {}),
+                "matched_keyword":    clip.get("matched_keyword", ""),
+                "topics":             clip.get("topics", []),
+                "people":             all_people,
+                "audio_url":          clip_url,
+                "start_time":         clip["start_time"],
+                "duration":           clip["end_time"] - clip["start_time"],
+                "quality":            clip.get("quality_score", 7),
+                "ratings":            [],
+                "avg_rating":         0,
                 "created_at":  datetime.now(timezone.utc).isoformat(),
             })
             log.info("  Clip saved: %s", clip["title"])
