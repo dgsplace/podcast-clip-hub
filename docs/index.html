@@ -1,13 +1,11 @@
-Got it. Here's the full file — select everything between the two --- lines and copy it:
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0046)file:///Users/dangati22/Downloads/index_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Clip Desk — Sports Media</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index_files/css2" rel="stylesheet">
 <style>
   :root {
     --ink:#0d0d0d;--paper:#f5f0e8;--cream:#ede7d9;--rust:#c0392b;--gold:#b8860b;--muted:#6b6560;--rule:#c8bfb0;--highlight:#fff3cd;--card-bg:#ffffff;
@@ -56,6 +54,17 @@ Got it. Here's the full file — select everything between the two --- lines and
   .play-btn{display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;color:var(--ink);background:none;border:1px solid var(--ink);padding:5px 12px;cursor:pointer;border-radius:2px;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
   .play-btn:hover,.play-btn.active{background:var(--ink);color:var(--paper)}
   .clip-duration{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)}
+  .clip-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);animation:fadeUp .2s ease}
+  .clip-expand.open{display:block}
+  .snippet-box{background:var(--cream);border-left:3px solid var(--rust);padding:10px 14px;font-size:13px;line-height:1.6;color:#444;border-radius:0 2px 2px 0;margin-bottom:10px;font-family:'DM Sans',sans-serif}
+  .snippet-box mark{background:#ffe08a;color:var(--ink);padding:1px 2px;border-radius:2px;font-weight:500}
+  .clip-links{display:flex;gap:10px;flex-wrap:wrap}
+  .clip-link{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 10px;border:1px solid var(--rule);border-radius:2px;color:var(--ink);text-decoration:none;background:white;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .clip-link:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .clip-link.primary{background:var(--rust);color:white;border-color:var(--rust)}
+  .clip-link.primary:hover{background:#a93226}
+  .expand-toggle{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
+  .expand-toggle:hover{color:var(--ink)}
   .rating-wrap{margin-left:auto;display:flex;gap:3px;align-items:center}
   .star{font-size:13px;color:var(--rule);cursor:pointer;transition:color .1s;line-height:1}
   .star:hover,.star.lit{color:var(--gold)}
@@ -88,16 +97,18 @@ Got it. Here's the full file — select everything between the two --- lines and
 </style>
 </head>
 <body>
+
 <header class="masthead">
   <div class="masthead-inner">
     <div>
       <div class="masthead-title">The Clip <span>Desk</span></div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;margin-top:4px;letter-spacing:1px;">SPORTS MEDIA — AUDIO CLIPS</div>
+      <div style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:11px;color:#888;margin-top:4px;letter-spacing:1px;">SPORTS MEDIA — AUDIO CLIPS</div>
     </div>
     <div class="masthead-meta" id="meta-date">Loading...</div>
   </div>
   <hr class="masthead-rule">
 </header>
+
 <div class="controls">
   <div class="controls-inner">
     <div class="controls-row">
@@ -129,6 +140,7 @@ Got it. Here's the full file — select everything between the two --- lines and
     </div>
   </div>
 </div>
+
 <main class="main">
   <div class="section-header">
     <span class="section-title">Latest Clips</span>
@@ -141,6 +153,7 @@ Got it. Here's the full file — select everything between the two --- lines and
     </div>
   </div>
 </main>
+
 <div class="now-playing" id="now-playing">
   <div class="np-info">
     <div class="np-podcast" id="np-podcast">—</div>
@@ -155,23 +168,135 @@ Got it. Here's the full file — select everything between the two --- lines and
     <button class="np-close" id="np-close">✕</button>
   </div>
 </div>
+
 <audio id="audio-player" preload="none"></audio>
+
 <script>
 let allClips=[],activeTopic='all',activePodcast='all',activeDays='all',activeSort='newest',searchQuery='',currentClipId=null;
 const audio=document.getElementById('audio-player');
-async function loadClips(){try{const r=await fetch('clips.json?'+Date.now());if(!r.ok)throw new Error();allClips=await r.json()}catch(e){allClips=[]}buildTopicPills();buildPodcastDropdown();render();updateMeta()}
-function updateMeta(){const el=document.getElementById('meta-date');el.innerHTML=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'<br>'+allClips.length+' CLIPS ARCHIVED'}
-function buildTopicPills(){const tc={};allClips.forEach(c=>(c.topics||[]).forEach(t=>{tc[t]=(tc[t]||0)+1}));const sorted=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,14).map(([t])=>t);const con=document.getElementById('topic-pills');con.innerHTML='<button class="pill active" data-topic="all">All</button>';sorted.forEach(t=>{const b=document.createElement('button');b.className='pill';b.dataset.topic=t;b.textContent=t;con.appendChild(b)});con.addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;activeTopic=b.dataset.topic;con.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));b.classList.add('active');updateClearBtn();render()})}
-function buildPodcastDropdown(){const pods=[...new Set(allClips.map(c=>c.podcast).filter(Boolean))].sort();const sel=document.getElementById('podcast-select');sel.innerHTML='<option value="all">All podcasts</option>';pods.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o)})}
-function filteredClips(){let c=[...allClips];if(activeTopic!=='all')c=c.filter(x=>(x.topics||[]).includes(activeTopic));if(activePodcast!=='all')c=c.filter(x=>x.podcast===activePodcast);if(activeDays!=='all'){const cut=new Date();cut.setDate(cut.getDate()-parseInt(activeDays));c=c.filter(x=>new Date(x.published)>=cut)}if(searchQuery){const q=searchQuery.toLowerCase();c=c.filter(x=>(x.title||'').toLowerCase().includes(q)||(x.summary||'').toLowerCase().includes(q)||(x.podcast||'').toLowerCase().includes(q)||(x.episode||'').toLowerCase().includes(q)||(x.people||[]).some(p=>p.toLowerCase().includes(q))||(x.topics||[]).some(t=>t.toLowerCase().includes(q)))}if(activeSort==='newest')c.sort((a,b)=>new Date(b.published)-new Date(a.published));else if(activeSort==='oldest')c.sort((a,b)=>new Date(a.published)-new Date(b.published));else if(activeSort==='quality')c.sort((a,b)=>(b.quality||0)-(a.quality||0));return c}
+
+async function loadClips(){
+  try{const r=await fetch('clips.json?'+Date.now());if(!r.ok)throw new Error();allClips=await r.json()}
+  catch(e){allClips=[]}
+  buildTopicPills();buildPodcastDropdown();render();updateMeta();
+}
+
+function updateMeta(){
+  const el=document.getElementById('meta-date');
+  el.innerHTML=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'<br>'+allClips.length+' CLIPS ARCHIVED';
+}
+
+function buildTopicPills(){
+  const tc={};allClips.forEach(c=>(c.topics||[]).forEach(t=>{tc[t]=(tc[t]||0)+1}));
+  const sorted=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,14).map(([t])=>t);
+  const con=document.getElementById('topic-pills');
+  con.innerHTML='<button class="pill active" data-topic="all">All</button>';
+  sorted.forEach(t=>{const b=document.createElement('button');b.className='pill';b.dataset.topic=t;b.textContent=t;con.appendChild(b)});
+  con.addEventListener('click',e=>{
+    const b=e.target.closest('.pill');if(!b)return;
+    activeTopic=b.dataset.topic;
+    con.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));b.classList.add('active');
+    updateClearBtn();render();
+  });
+}
+
+function buildPodcastDropdown(){
+  const pods=[...new Set(allClips.map(c=>c.podcast).filter(Boolean))].sort();
+  const sel=document.getElementById('podcast-select');
+  sel.innerHTML='<option value="all">All podcasts</option>';
+  pods.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o)});
+}
+
+function filteredClips(){
+  let c=[...allClips];
+  if(activeTopic!=='all')c=c.filter(x=>(x.topics||[]).includes(activeTopic));
+  if(activePodcast!=='all')c=c.filter(x=>x.podcast===activePodcast);
+  if(activeDays!=='all'){const cut=new Date();cut.setDate(cut.getDate()-parseInt(activeDays));c=c.filter(x=>new Date(x.published)>=cut)}
+  if(searchQuery){const q=searchQuery.toLowerCase();c=c.filter(x=>(x.title||'').toLowerCase().includes(q)||(x.summary||'').toLowerCase().includes(q)||(x.podcast||'').toLowerCase().includes(q)||(x.episode||'').toLowerCase().includes(q)||(x.people||[]).some(p=>p.toLowerCase().includes(q))||(x.topics||[]).some(t=>t.toLowerCase().includes(q)))}
+  if(activeSort==='newest')c.sort((a,b)=>new Date(b.published)-new Date(a.published));
+  else if(activeSort==='oldest')c.sort((a,b)=>new Date(a.published)-new Date(b.published));
+  else if(activeSort==='quality')c.sort((a,b)=>(b.quality||0)-(a.quality||0));
+  return c;
+}
+
 function isFiltered(){return activeTopic!=='all'||activePodcast!=='all'||activeDays!=='all'||searchQuery!==''}
 function updateClearBtn(){document.getElementById('clear-btn').style.display=isFiltered()?'block':'none'}
-function clearAll(){activeTopic='all';activePodcast='all';activeDays='all';searchQuery='';activeSort='newest';document.getElementById('podcast-select').value='all';document.getElementById('date-select').value='all';document.getElementById('sort-select').value='newest';document.getElementById('search').value='';document.getElementById('topic-pills').querySelectorAll('.pill').forEach((p,i)=>p.classList.toggle('active',i===0));updateClearBtn();render()}
-function render(){const clips=filteredClips();const grid=document.getElementById('clip-grid');document.getElementById('clip-count').textContent=clips.length+' clip'+(clips.length!==1?'s':'');if(!clips.length){grid.innerHTML='<div class="empty"><div class="empty-headline">'+(isFiltered()?'Nothing matched.':'No clips yet.')+'</div><div class="empty-sub">'+(isFiltered()?'Try adjusting your filters.':'Run the pipeline to get started.')+'</div></div>';return}grid.innerHTML=clips.map((c,i)=>clipCard(c,i)).join('');grid.querySelectorAll('.play-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();playClip(b.closest('.clip-card').dataset.id)}));grid.querySelectorAll('.star').forEach(s=>s.addEventListener('click',e=>{e.stopPropagation();rateClip(s.closest('.clip-card').dataset.id,parseInt(s.dataset.val))}));grid.querySelectorAll('.podcast-name').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();activePodcast=el.dataset.podcast;document.getElementById('podcast-select').value=activePodcast;updateClearBtn();render()}));grid.querySelectorAll('.tag[data-topic]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();activeTopic=el.dataset.topic;document.getElementById('topic-pills').querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.topic===activeTopic));updateClearBtn();render()}));if(currentClipId){const card=grid.querySelector('[data-id="'+currentClipId+'"]');if(card){card.classList.add('playing');const pb=card.querySelector('.play-btn');pb.classList.add('active');pb.innerHTML='⏸ Playing'}}const ratings=JSON.parse(localStorage.getItem('clip_ratings')||'{}');grid.querySelectorAll('.clip-card').forEach(card=>{const id=card.dataset.id;if(ratings[id])card.querySelectorAll('.star').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.val)<=ratings[id]))})}
+
+function clearAll(){
+  activeTopic='all';activePodcast='all';activeDays='all';searchQuery='';activeSort='newest';
+  document.getElementById('podcast-select').value='all';
+  document.getElementById('date-select').value='all';
+  document.getElementById('sort-select').value='newest';
+  document.getElementById('search').value='';
+  document.getElementById('topic-pills').querySelectorAll('.pill').forEach((p,i)=>p.classList.toggle('active',i===0));
+  updateClearBtn();render();
+}
+
+function render(){
+  const clips=filteredClips();
+  const grid=document.getElementById('clip-grid');
+  document.getElementById('clip-count').textContent=clips.length+' clip'+(clips.length!==1?'s':'');
+  if(!clips.length){
+    grid.innerHTML='<div class="empty"><div class="empty-headline">'+(isFiltered()?'Nothing matched.':'No clips yet.')+'</div><div class="empty-sub">'+(isFiltered()?'Try adjusting your filters.':'Run the pipeline to get started.')+'</div></div>';
+    return;
+  }
+  grid.innerHTML=clips.map((c,i)=>clipCard(c,i)).join('');
+  grid.querySelectorAll('.play-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();playClip(b.closest('.clip-card').dataset.id)}));
+  grid.querySelectorAll('.star').forEach(s=>s.addEventListener('click',e=>{e.stopPropagation();rateClip(s.closest('.clip-card').dataset.id,parseInt(s.dataset.val))}));
+  grid.querySelectorAll('.podcast-name').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();activePodcast=el.dataset.podcast;document.getElementById('podcast-select').value=activePodcast;updateClearBtn();render()}));
+  grid.querySelectorAll('.tag[data-topic]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();activeTopic=el.dataset.topic;document.getElementById('topic-pills').querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.topic===activeTopic));updateClearBtn();render()}));
+  if(currentClipId){const card=grid.querySelector('[data-id="'+currentClipId+'"]');if(card){card.classList.add('playing');const pb=card.querySelector('.play-btn');pb.classList.add('active');pb.innerHTML='⏸ Playing'}}
+  const ratings=JSON.parse(localStorage.getItem('clip_ratings')||'{}');
+  grid.querySelectorAll('.clip-card').forEach(card=>{const id=card.dataset.id;if(ratings[id])card.querySelectorAll('.star').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.val)<=ratings[id]))});
+}
+
 function fmt(s){s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function fmtDate(iso){if(!iso)return'';return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
-function clipCard(c,i){const avg=c.avg_rating||0;const stars=[1,2,3,4,5].map(n=>'<span class="star '+(n<=avg?'lit':'')+'" data-val="'+n+'">★</span>').join('');const tags=(c.topics||[]).slice(0,3).map(t=>'<span class="tag" data-topic="'+t+'">'+t+'</span>').join('');const people=(c.people||[]).slice(0,3).map(p=>'<span class="tag" style="background:#f0e8d8;color:#7a6a5a;">'+p+'</span>').join('');return'<div class="clip-card" data-id="'+c.id+'" style="animation-delay:'+i*35+'ms"><div class="clip-card-top"><div class="podcast-name" data-podcast="'+(c.podcast||'')+'">'+(c.podcast||'')+'</div><div class="clip-date">'+fmtDate(c.published)+'</div></div><div class="clip-title">'+(c.title||'Untitled')+'</div><div class="clip-summary">'+(c.summary||'')+'</div><div class="clip-tags">'+tags+people+'</div><div class="clip-footer"><button class="play-btn"><span>▶</span> Play</button><span class="clip-duration">'+fmt(c.duration)+'</span><div class="rating-wrap">'+stars+'</div></div></div>'}
-function playClip(id){const clip=allClips.find(c=>c.id===id);if(!clip)return;if(currentClipId===id&&!audio.paused){audio.pause();return}currentClipId=id;audio.src=clip.audio_url;audio.play().catch(()=>{});document.getElementById('np-podcast').textContent=clip.podcast||'';document.getElementById('np-title').textContent=clip.title||'';document.getElementById('now-playing').classList.add('visible');document.getElementById('np-playpause').textContent='⏸ Pause';render()}
+
+function buildSnippet(c){
+  const s=c.transcript_snippet;
+  if(!s||!s.text)return '<em style="color:var(--muted);font-size:12px;">No transcript snippet available.</em>';
+  const t=s.text,hs=s.highlight_start||0,hl=s.highlight_len||0;
+  if(!hl)return t;
+  return t.slice(0,hs)+'<mark>'+t.slice(hs,hs+hl)+'</mark>'+t.slice(hs+hl);
+}
+function shareUrl(id){return location.origin+location.pathname+'#clip-'+id}
+function clipCard(c,i){
+  const avg=c.avg_rating||0;
+  const stars=[1,2,3,4,5].map(n=>'<span class="star '+(n<=avg?'lit':'')+'" data-val="'+n+'">★</span>').join('');
+  const tags=(c.topics||[]).slice(0,3).map(t=>'<span class="tag" data-topic="'+t+'">'+t+'</span>').join('');
+  const people=(c.people||[]).slice(0,3).map(p=>'<span class="tag" style="background:#f0e8d8;color:#7a6a5a;">'+p+'</span>').join('');
+  const epLink=c.episode_url?'<a class="clip-link" href="'+c.episode_url+'" target="_blank" rel="noopener">⟶ Full episode</a>':'';
+  const expand='<div class="clip-expand" id="expand-'+c.id+'"><div class="snippet-box">'+buildSnippet(c)+'</div><div class="clip-links"><a class="clip-link primary" href="'+shareUrl(c.id)+'" onclick="copyShare(event,''+c.id+'')">⎘ Copy share link</a>'+epLink+'</div></div>';
+  return '<div class="clip-card" data-id="'+c.id+'" style="animation-delay:'+i*35+'ms"><div class="clip-card-top"><div class="podcast-name" data-podcast="'+(c.podcast||'')+'">'+( c.podcast||'')+'</div><div class="clip-date">'+fmtDate(c.published)+'</div></div><div class="clip-title">'+(c.title||'Untitled')+'</div><div class="clip-summary">'+(c.summary||'')+'</div><div class="clip-tags">'+tags+people+'</div>'+expand+'<div class="clip-footer"><button class="play-btn"><span>▶</span> Play</button><span class="clip-duration">'+fmt(c.duration)+'</span><button class="expand-toggle" onclick="toggleExpand(event,'expand-'+c.id+'')">Details ▾</button><div class="rating-wrap">'+stars+'</div></div></div>';
+}
+function toggleExpand(e,id){
+  e.stopPropagation();
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.toggle('open');
+  e.target.textContent=el.classList.contains('open')?'Details ▴':'Details ▾';
+}
+function copyShare(e,id){
+  e.preventDefault();
+  const url=shareUrl(id);
+  navigator.clipboard.writeText(url).then(()=>{
+    e.target.textContent='✓ Copied!';
+    setTimeout(()=>e.target.textContent='⎘ Copy share link',2000);
+  }).catch(()=>window.open(url,'_blank'));
+}
+
+function playClip(id){
+  const clip=allClips.find(c=>c.id===id);if(!clip)return;
+  if(currentClipId===id&&!audio.paused){audio.pause();return}
+  currentClipId=id;audio.src=clip.audio_url;audio.play().catch(()=>{});
+  document.getElementById('np-podcast').textContent=clip.podcast||'';
+  document.getElementById('np-title').textContent=clip.title||'';
+  document.getElementById('now-playing').classList.add('visible');
+  document.getElementById('np-playpause').textContent='⏸ Pause';
+  render();
+}
+
 audio.addEventListener('timeupdate',()=>{const p=audio.duration?(audio.currentTime/audio.duration*100):0;document.getElementById('np-fill').style.width=p+'%';document.getElementById('np-time').textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)});
 audio.addEventListener('ended',()=>{currentClipId=null;render()});
 audio.addEventListener('pause',()=>document.getElementById('np-playpause').textContent='▶ Play');
@@ -179,14 +304,38 @@ audio.addEventListener('play',()=>document.getElementById('np-playpause').textCo
 document.getElementById('np-playpause').addEventListener('click',()=>audio.paused?audio.play():audio.pause());
 document.getElementById('np-close').addEventListener('click',()=>{audio.pause();audio.src='';currentClipId=null;document.getElementById('now-playing').classList.remove('visible');render()});
 document.getElementById('np-progress').addEventListener('click',e=>{if(!audio.duration)return;const r=e.currentTarget.getBoundingClientRect();audio.currentTime=(e.clientX-r.left)/r.width*audio.duration});
+
 function rateClip(id,val){const ratings=JSON.parse(localStorage.getItem('clip_ratings')||'{}');ratings[id]=val;localStorage.setItem('clip_ratings',JSON.stringify(ratings));const clip=allClips.find(c=>c.id===id);if(clip)clip.avg_rating=val;render()}
+
 document.getElementById('podcast-select').addEventListener('change',e=>{activePodcast=e.target.value;updateClearBtn();render()});
 document.getElementById('date-select').addEventListener('change',e=>{activeDays=e.target.value;updateClearBtn();render()});
 document.getElementById('sort-select').addEventListener('change',e=>{activeSort=e.target.value;render()});
 document.getElementById('search').addEventListener('input',e=>{searchQuery=e.target.value.trim();updateClearBtn();render()});
 document.getElementById('clear-btn').addEventListener('click',clearAll);
-loadClips();
+
+// Hash routing — pre-load clip from URL #clip-{id}
+function handleHash(){
+  const hash=location.hash;
+  if(!hash.startsWith('#clip-'))return;
+  const id=hash.slice(6);
+  const clip=allClips.find(c=>c.id===id);
+  if(!clip)return;
+  // Scroll to card
+  const card=document.querySelector('[data-id="'+id+'"]');
+  if(card){card.scrollIntoView({behavior:'smooth',block:'center'});}
+  // Auto-play
+  playClip(id);
+  // Open expand panel
+  const expand=document.getElementById('expand-'+id);
+  if(expand){expand.classList.add('open');}
+}
+
+async function loadClipsAndRoute(){
+  await loadClips();
+  handleHash();
+}
+loadClipsAndRoute();
 </script>
-</body>
-</html>
----
+
+
+</body></html>
