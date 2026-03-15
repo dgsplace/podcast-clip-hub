@@ -293,10 +293,11 @@ def transcribe(audio_path):
             "https://api.assemblyai.com/v2/transcript",
             headers=headers,
             json={
-                "audio_url": upload_url,
-                "speaker_labels": True,
-                "auto_highlights": True,
-            },
+    "audio_url": upload_url,
+    "speech_models": ["universal-2"],
+    "speaker_labels": True,
+    "auto_highlights": True,
+},
             timeout=30,
         )
         transcript_resp.raise_for_status()
