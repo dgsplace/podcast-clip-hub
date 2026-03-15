@@ -25,8 +25,6 @@ import requests
 import feedparser
 import boto3
 from botocore.config import Config
-import assemblyai as aai
-
 import config
 
 logging.basicConfig(
@@ -45,8 +43,6 @@ R2_SECRET_ACCESS_KEY = os.environ["R2_SECRET_ACCESS_KEY"]
 R2_ACCOUNT_ID       = os.environ["R2_ACCOUNT_ID"]
 R2_PUBLIC_URL       = os.environ["R2_PUBLIC_URL"].rstrip("/")
 ANTHROPIC_API_KEY   = os.environ["ANTHROPIC_API_KEY"]
-
-aai.settings.api_key = ASSEMBLYAI_API_KEY
 
 # R2 client (S3-compatible)
 r2 = boto3.client(
@@ -269,25 +265,84 @@ def download_audio(episode, tmpdir):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def transcribe(audio_path):
-    """Transcribe audio with AssemblyAI. Returns transcript object or None."""
+    """
+    Transcribe audio using AssemblyAI REST API directly.
+    Returns a simple object with .text and .words attributes.
+    """
     log.info("  Transcribing with AssemblyAI...")
+    headers = {"authorization": ASSEMBLYAI_API_KEY, "content-type": "application/json"}
+
+    # 1. Upload audio file
     try:
-        transcriber = aai.Transcriber()
-        transcript = transcriber.transcribe(
-            audio_path,
-            config=aai.TranscriptionConfig(
-                speaker_labels=True,
-                auto_highlights=True,
+        with open(audio_path, "rb") as f:
+            upload_resp = requests.post(
+                "https://api.assemblyai.com/v2/upload",
+                headers={"authorization": ASSEMBLYAI_API_KEY},
+                data=f,
+                timeout=120,
             )
-        )
-        if transcript.status == aai.TranscriptStatus.error:
-            log.warning("  Transcription error: %s", transcript.error)
-            return None
-        log.info("  Transcription complete (%d chars)", len(transcript.text or ""))
-        return transcript
+        upload_resp.raise_for_status()
+        upload_url = upload_resp.json()["upload_url"]
     except Exception as exc:
-        log.warning("  Transcription failed: %s", exc)
+        log.warning("  Upload failed: %s", exc)
         return None
+
+    # 2. Submit transcription job
+    try:
+        transcript_resp = requests.post(
+            "https://api.assemblyai.com/v2/transcript",
+            headers=headers,
+            json={
+                "audio_url": upload_url,
+                "speaker_labels": True,
+                "auto_highlights": True,
+            },
+            timeout=30,
+        )
+        transcript_resp.raise_for_status()
+        transcript_id = transcript_resp.json()["id"]
+    except Exception as exc:
+        log.warning("  Transcription submit failed: %s", exc)
+        return None
+
+    # 3. Poll until complete
+    polling_url = f"https://api.assemblyai.com/v2/transcript/{transcript_id}"
+    max_wait = 600  # 10 minutes
+    waited = 0
+    while waited < max_wait:
+        try:
+            poll_resp = requests.get(polling_url, headers=headers, timeout=30)
+            poll_resp.raise_for_status()
+            data = poll_resp.json()
+            status = data.get("status")
+            if status == "completed":
+                log.info("  Transcription complete (%d chars)", len(data.get("text") or ""))
+                # Build a simple result object
+                class TranscriptResult:
+                    pass
+                result = TranscriptResult()
+                result.text = data.get("text", "")
+                # Build word objects
+                class Word:
+                    def __init__(self, d):
+                        self.text  = d.get("text", "")
+                        self.start = d.get("start", 0)
+                        self.end   = d.get("end", 0)
+                result.words = [Word(w) for w in data.get("words") or []]
+                return result
+            elif status == "error":
+                log.warning("  Transcription error: %s", data.get("error"))
+                return None
+            else:
+                time.sleep(5)
+                waited += 5
+        except Exception as exc:
+            log.warning("  Polling error: %s", exc)
+            time.sleep(5)
+            waited += 5
+
+    log.warning("  Transcription timed out after %ds", max_wait)
+    return None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
