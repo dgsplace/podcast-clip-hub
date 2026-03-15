@@ -189,7 +189,7 @@ Only return clips with quality_score >= 7. Return as JSON array.
 # ─────────────────────────────────────────────────────────────────────────────
 
 # How many days back to look for new episodes
-LOOKBACK_DAYS = 1
+LOOKBACK_DAYS = 7
 
 # Max episode duration to process (minutes) — skip very long episodes to control costs
 MAX_EPISODE_MINUTES = 90
