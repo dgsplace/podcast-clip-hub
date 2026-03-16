@@ -204,7 +204,9 @@ def transcribe(audio_path: str) -> dict | None:
             },
             timeout=30,
         )
-        job.raise_for_status()
+        if not job.ok:
+            log.warning("  Transcription submit failed %s: %s", job.status_code, job.text)
+            return None
         transcript_id = job.json()["id"]
     except Exception as exc:
         log.warning("  Transcription submit failed: %s", exc)
