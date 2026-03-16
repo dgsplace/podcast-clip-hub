@@ -60,7 +60,7 @@ PODCASTS = [
     {
         "name": "The Herd with Colin Cowherd",
         "type": "youtube",
-        "url":  "https://www.youtube.com/@TheHerd",
+        "url":  "https://www.youtube.com/@ColinCowherd",
     },
     {
         "name": "The Varsity",
