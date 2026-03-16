@@ -199,6 +199,7 @@ def transcribe(audio_path: str) -> dict | None:
             headers={**headers, "content-type": "application/json"},
             json={
                 "audio_url": upload_url,
+                "speech_models": ["universal-2"],
                 "speaker_labels": True,
                 "auto_highlights": True,
             },
