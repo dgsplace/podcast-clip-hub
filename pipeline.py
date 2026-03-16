@@ -256,8 +256,8 @@ def find_keyword_clips(transcript: dict, episode: dict) -> list:
 
                 # Deduplicate overlapping matches
                 overlapping = False
-                for rs, re in matched_ranges:
-                    if not (match_end < rs or match_start > re):
+                for range_start, range_end in matched_ranges:
+                    if not (match_end < range_start or match_start > range_end):
                         overlapping = True
                         break
                 if overlapping:
