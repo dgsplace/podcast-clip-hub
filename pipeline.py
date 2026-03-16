@@ -44,13 +44,22 @@ R2_ACCOUNT_ID       = os.environ["R2_ACCOUNT_ID"]
 R2_PUBLIC_URL       = os.environ["R2_PUBLIC_URL"].rstrip("/")
 ANTHROPIC_API_KEY   = os.environ["ANTHROPIC_API_KEY"]
 
-# R2 client (S3-compatible)
+# R2 client (S3-compatible) — using urllib3 to bypass SSL issues on GitHub Actions
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+import os as _os
+_os.environ["AWS_CA_BUNDLE"] = ""
+
 r2 = boto3.client(
     "s3",
     endpoint_url=f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com",
     aws_access_key_id=R2_ACCESS_KEY_ID,
     aws_secret_access_key=R2_SECRET_ACCESS_KEY,
-    config=Config(signature_version="s3v4", retries={"max_attempts": 3}),
+    config=Config(
+        signature_version="s3v4",
+        retries={"max_attempts": 3},
+    ),
     region_name="auto",
     verify=False,
 )
@@ -550,15 +559,29 @@ def cut_clip(audio_path, start, end, out_path):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def upload_to_r2(local_path, key):
-    """Upload a file to Cloudflare R2. Returns public URL."""
+    """Upload a file to Cloudflare R2 using pre-signed URL via boto3, then PUT via requests."""
     log.info("  Uploading to R2: %s", key)
     try:
-        r2.upload_file(
-            local_path,
-            config.R2_BUCKET_NAME,
-            key,
-            ExtraArgs={"ContentType": "audio/mpeg"},
+        # Generate a pre-signed PUT URL
+        presigned_url = r2.generate_presigned_url(
+            "put_object",
+            Params={
+                "Bucket": config.R2_BUCKET_NAME,
+                "Key": key,
+                "ContentType": "audio/mpeg",
+            },
+            ExpiresIn=300,
         )
+        # Upload using requests with SSL verification disabled
+        with open(local_path, "rb") as f:
+            resp = requests.put(
+                presigned_url,
+                data=f,
+                headers={"Content-Type": "audio/mpeg"},
+                verify=False,
+                timeout=120,
+            )
+        resp.raise_for_status()
         return f"{R2_PUBLIC_URL}/{key}"
     except Exception as exc:
         log.warning("  R2 upload failed: %s", exc)
