@@ -1,150 +1,144 @@
-"""
-Podcast Clip Hub — Configuration
-=================================
-Add/remove podcasts here. YouTube channels use yt-dlp.
-RSS feeds use feedparser + requests.
-"""
+import os
 
-# ─────────────────────────────────────────────────────────────────────────────
-#  Podcast Sources
-# ─────────────────────────────────────────────────────────────────────────────
+# ── API Keys (from GitHub Secrets) ──────────────────────────────────────────
+ASSEMBLYAI_API_KEY  = os.environ.get("ASSEMBLYAI_API_KEY", "")
+ANTHROPIC_API_KEY   = os.environ.get("ANTHROPIC_API_KEY", "")
+R2_ACCESS_KEY_ID    = os.environ.get("R2_ACCESS_KEY_ID", "")
+R2_SECRET_ACCESS_KEY = os.environ.get("R2_SECRET_ACCESS_KEY", "")
+R2_ACCOUNT_ID       = os.environ.get("R2_ACCOUNT_ID", "")
+R2_PUBLIC_URL       = os.environ.get("R2_PUBLIC_URL", "")
+R2_BUCKET_NAME      = "podcast-clips"
+GITHUB_TOKEN        = os.environ.get("GITHUB_TOKEN", "")
 
-RSS_FEEDS = [
+# ── Pipeline Settings ────────────────────────────────────────────────────────
+LOOKBACK_DAYS       = 14       # days back to fetch episodes
+MAX_EPISODES_PER_RUN = 40      # safety cap per pipeline run
+CLIP_BEFORE_SECS    = 20       # seconds before keyword match
+CLIP_AFTER_SECS     = 30       # seconds after keyword match
+SNIPPET_WORDS       = 50       # words around keyword for transcript snippet
+OUTPUT_DIR          = "docs"
+CLIPS_JSON          = "docs/clips.json"
+SEEN_EPISODES_FILE  = "seen_episodes.json"
+
+# ── Podcast Sources ──────────────────────────────────────────────────────────
+PODCASTS = [
     {
         "name": "Sports Business Radio",
-        "rss": "https://cms.megaphone.fm/channel/sportsbusinessradio",
-        "tags": ["sports business"],
+        "type": "rss",
+        "url":  "https://cms.megaphone.fm/channel/sportsbusinessradio",
     },
     {
         "name": "SBJ Morning Buzzcast",
-        "rss": "https://feeds.simplecast.com/IDVEdQwe",
-        "tags": ["sports business", "media"],
+        "type": "rss",
+        "url":  "https://feeds.simplecast.com/IDVEdQwe",
     },
     {
         "name": "SBJ Sports Media Podcast",
-        "rss": "https://feeds.simplecast.com/sbj-sports-media",
-        "tags": ["sports business", "media"],
+        "type": "rss",
+        "url":  "https://feeds.simplecast.com/M6Ik0Ix0",
     },
     {
         "name": "The Joe Pomp Show",
-        "rss": "https://feeds.simplecast.com/joe-pomp-show",
-        "tags": ["sports business"],
+        "type": "rss",
+        "url":  "https://feeds.simplecast.com/joepompshow",
     },
     {
         "name": "Pardon My Take",
-        "rss": "https://mcsorleys.barstoolsports.com/feed/pardon-my-take",
-        "tags": ["sports", "comedy"],
+        "type": "rss",
+        "url":  "https://mcsorleys.barstoolsports.com/feed/pardon-my-take",
     },
     {
         "name": "The Bill Simmons Podcast",
-        "rss": "https://feeds.megaphone.fm/the-bill-simmons-podcast",
-        "tags": ["sports", "media"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/the-bill-simmons-podcast",
     },
     {
         "name": "The Ryen Russillo Podcast",
-        "rss": "https://feeds.megaphone.fm/the-ryen-russillo-podcast",
-        "tags": ["sports"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/the-ryen-russillo-podcast",
+    },
+    {
+        "name": "The Herd with Colin Cowherd",
+        "type": "youtube",
+        "url":  "https://www.youtube.com/@TheHerd",
     },
     {
         "name": "The Varsity",
-        "rss": "https://feeds.megaphone.fm/the-varsity",
-        "tags": ["sports business", "media"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/the-varsity",
     },
     {
         "name": "Marchand Sports Media",
-        "rss": "https://andrewmarchand.substack.com/feed/podcast",
-        "tags": ["sports media"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/marchand-sports-media",
     },
     {
         "name": "Sporticast",
-        "rss": "https://feeds.megaphone.fm/sporticast",
-        "tags": ["sports business"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/sporticast",
     },
     {
         "name": "Sports Media with Richard Deitsch",
-        "rss": "https://feeds.megaphone.fm/sports-media-deitsch",
-        "tags": ["sports media"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/sports-media-deitsch",
     },
     {
         "name": "The Press Box",
-        "rss": "https://feeds.megaphone.fm/the-press-box",
-        "tags": ["media"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/the-press-box",
     },
     {
         "name": "The Town with Matthew Belloni",
-        "rss": "https://feeds.megaphone.fm/the-town-with-matthew-belloni",
-        "tags": ["media", "hollywood"],
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/the-town-with-matthew-belloni",
     },
-]
-
-YOUTUBE_CHANNELS = [
     {
-        "name": "The Herd with Colin Cowherd",
-        "channel_url": "https://www.youtube.com/@TheHerd",
-        "tags": ["sports"],
+        "name": "Awful Announcing Podcast",
+        "type": "rss",
+        "url":  "https://feeds.simplecast.com/awfulannouncing",
+    },
+    {
+        "name": "Pablo Torre Finds Out",
+        "type": "rss",
+        "url":  "https://feeds.megaphone.fm/pablo-torre-finds-out",
+    },
+    {
+        "name": "SI Media with Jimmy Traina",
+        "type": "rss",
+        "url":  "https://feeds.simplecast.com/si-media-jimmy-traina",
+    },
+    {
+        "name": "Sports Media Watch Podcast",
+        "type": "rss",
+        "url":  "https://feeds.simplecast.com/sportsmediawatch",
     },
 ]
 
-# ─────────────────────────────────────────────────────────────────────────────
-#  Clip Detection
-# ─────────────────────────────────────────────────────────────────────────────
-
-# Keywords that always trigger a clip (case-insensitive)
+# ── Keywords & Names to Clip ─────────────────────────────────────────────────
 KEYWORD_TOPICS = [
-    # ── Topics ──
+    # Industry topics
     "media rights deal",
+    "brand partnership",
     "content distribution",
     "direct to consumer",
-    "sports media landscape",
-    "production company",
-    "streaming partner",
-    "brand partnership",
     "digital content strategy",
-    "owning your content",
-    "sports storytelling",
-
-    # ── Platforms & networks ──
-    "media rights",
-    "streaming",
-    "ESPN",
-    "Netflix",
-    "Amazon",
-    "Apple",
-    "YouTube",
-    "NBC Sports",
-    "Fox Sports",
-    "CBS Sports",
-    "TNT",
-    "Peacock",
-    "Max",
-    "Paramount",
-    "Disney",
-    "Spotify",
-
-    # ── Leagues & business ──
-    "NBA",
-    "NFL",
-    "MLB",
-    "NHL",
-    "college football",
-    "NIL",
+    "Netflix deal",
+    "Amazon deal",
     "private equity",
-    "valuation",
-    "stadium",
-    "broadcast deal",
-    "ratings",
-    "viewership",
-    "rights deal",
-    "podcast",
-
-    # ── People ──
-    "Peyton Manning",
-    "Jamie Horowitz",
-    "Connor Schell",
-    "Michael Rubin",
-    "Burke Magnus",
-    "Jimmy Pitaro",
-    "Roger Goodell",
+    "athlete media",
+    "distribution deal",
+    "TV ratings",
+    # Production companies
+    "Omaha Productions",
+    "Words + Pictures",
+    "OBB",
+    "ShadowLion",
+    "Togethxr",
+    "Springhill",
+    "Fulwell",
+    "SMAC Entertainment",
+    "Skydance",
+    # People
     "Jessica Berman",
     "Adam Silver",
     "Gary Bettman",
@@ -158,55 +152,27 @@ KEYWORD_TOPICS = [
     "Nick Parsons",
     "Brian Lockhart",
     "Marcia Cooke",
+    "Jamie Horowitz",
+    "Connor Schell",
+    "Libby Geist",
+    "Mike Levine",
+    "Mark Steinberg",
+    "Jon Weinbach",
 ]
 
-# AI also autonomously finds compelling clips beyond keywords
-AI_CLIP_PROMPT = """
-You are an expert at identifying compelling moments in sports media podcasts.
+# ── Claude AI Prompt for Smart Clip Detection ────────────────────────────────
+AI_CLIP_PROMPT = """You are an editor for a sports media industry newsletter.
+Review this podcast transcript and identify the 3-5 most clip-worthy moments
+about sports media business, rights deals, streaming, production companies,
+athlete-owned media, or industry figures.
 
-Given a transcript segment, identify moments worth clipping (30-120 seconds) that are:
-1. A strong opinion or bold take on sports media/business
-2. A breaking news reveal or exclusive information
-3. A heated debate or disagreement between hosts
-4. A surprising statistic or financial figure
-5. A prediction about the future of sports media
-6. A notable quote from a guest that stands alone
+For each clip return JSON with:
+- start_time: seconds from start
+- end_time: seconds from start  
+- title: punchy headline (max 12 words)
+- summary: 2-sentence context (what was said and why it matters)
+- topics: list of 2-4 relevant topic tags
+- people: list of names mentioned
+- quality: score 1-10
 
-For each clip, return JSON with:
-- start_time: seconds from episode start
-- end_time: seconds from episode start  
-- title: punchy 8-word max title
-- summary: 1-2 sentence description
-- topics: list of relevant topic tags (from: sports business, media rights, streaming, ESPN, NFL, NBA, MLB, NHL, college sports, ratings, technology, personalities)
-- people: list of people mentioned by name
-- quality_score: 1-10 (10 = must-listen moment)
-
-Only return clips with quality_score >= 7. Return as JSON array.
-"""
-
-# ─────────────────────────────────────────────────────────────────────────────
-#  Pipeline Settings
-# ─────────────────────────────────────────────────────────────────────────────
-
-# How many days back to look for new episodes
-LOOKBACK_DAYS = 7
-
-# Max episode duration to process (minutes) — skip very long episodes to control costs
-MAX_EPISODE_MINUTES = 90
-
-# Max clips per episode
-MAX_CLIPS_PER_EPISODE = 5
-
-# Min/max clip duration in seconds
-MIN_CLIP_SECONDS = 30
-MAX_CLIP_SECONDS = 120
-
-# AssemblyAI model
-ASSEMBLYAI_SPEECH_MODEL = "best"
-
-# Cloudflare R2
-R2_BUCKET_NAME = "podcast-clips"
-R2_ENDPOINT = "https://{account_id}.r2.cloudflarestorage.com"
-
-# Output
-CLIPS_JSON_PATH = "docs/clips.json"
+Return only a JSON array. No other text."""
