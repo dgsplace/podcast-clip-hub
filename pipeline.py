@@ -50,8 +50,9 @@ r2 = boto3.client(
     endpoint_url=f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com",
     aws_access_key_id=R2_ACCESS_KEY_ID,
     aws_secret_access_key=R2_SECRET_ACCESS_KEY,
-    config=Config(signature_version="s3v4"),
+    config=Config(signature_version="s3v4", retries={"max_attempts": 3}),
     region_name="auto",
+    verify=False,
 )
 
 SESSION = requests.Session()
@@ -293,11 +294,11 @@ def transcribe(audio_path):
             "https://api.assemblyai.com/v2/transcript",
             headers=headers,
             json={
-    "audio_url": upload_url,
-    "speech_models": ["universal-2"],
-    "speaker_labels": True,
-    "auto_highlights": True,
-},
+                "audio_url": upload_url,
+                "speech_models": ["universal-2"],
+                "speaker_labels": True,
+                "auto_highlights": True,
+            },
             timeout=30,
         )
         transcript_resp.raise_for_status()
@@ -484,7 +485,7 @@ Return ONLY valid JSON array, no other text."""
                 "content-type": "application/json",
             },
             json={
-                "model": "claude-sonnet-4-20250514",
+                "model": "claude-sonnet-4-6",
                 "max_tokens": 1500,
                 "messages": [{"role": "user", "content": prompt}],
             },
