@@ -1,341 +1,483 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///Users/dangati22/Downloads/index_1.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Clip Desk — Sports Media</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./index_files/css2" rel="stylesheet">
+<title>Dan's Podcast Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@300;400;500&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink:#0d0d0d;--paper:#f5f0e8;--cream:#ede7d9;--rust:#c0392b;--gold:#b8860b;--muted:#6b6560;--rule:#c8bfb0;--highlight:#fff3cd;--card-bg:#ffffff;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
-  .masthead{background:var(--ink);color:var(--paper);padding:28px 40px 20px;border-bottom:4px solid var(--rust)}
-  .masthead-inner{max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
-  .masthead-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-1px;line-height:1}
-  .masthead-title span{color:var(--rust);font-style:italic}
-  .masthead-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#aaa;text-align:right;line-height:1.8}
-  .masthead-rule{border:none;border-top:1px solid #333;margin:14px auto 0;max-width:1280px}
-  .controls{background:var(--cream);border-bottom:1px solid var(--rule);padding:0 40px;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
-  .controls-inner{max-width:1280px;margin:0 auto}
-  .controls-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 0}
-  .controls-row+.controls-row{border-top:1px solid var(--rule)}
-  .filter-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--muted);white-space:nowrap;min-width:52px}
-  .filter-pills{display:flex;gap:6px;flex-wrap:wrap;flex:1}
-  .pill{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border:1px solid var(--rule);background:white;color:var(--muted);border-radius:2px;cursor:pointer;transition:all .15s;white-space:nowrap}
-  .pill:hover{border-color:var(--ink);color:var(--ink)}
-  .pill.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .ctrl-select{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 10px;border:1px solid var(--rule);background:white;color:var(--ink);border-radius:2px;cursor:pointer;outline:none;max-width:220px}
-  .ctrl-select:focus{border-color:var(--ink)}
-  .search-input{font-family:'DM Sans',sans-serif;font-size:13px;padding:5px 12px;border:1px solid var(--rule);background:white;color:var(--ink);border-radius:2px;outline:none;width:180px;margin-left:auto}
-  .search-input:focus{border-color:var(--ink)}
-  .clear-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 8px;border:1px solid var(--rust);background:none;color:var(--rust);border-radius:2px;cursor:pointer;white-space:nowrap}
-  .clear-btn:hover{background:var(--rust);color:white}
-  .main{max-width:1280px;margin:0 auto;padding:32px 40px}
-  .section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:24px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
-  .section-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700}
-  .section-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
-  .clip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
-  .clip-card{background:var(--card-bg);padding:20px;display:flex;flex-direction:column;gap:10px;transition:background .15s;position:relative}
-  .clip-card:hover{background:#fafaf8}
-  .clip-card.playing{background:var(--highlight)}
-  .clip-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-  .podcast-name{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--rust);line-height:1.2;cursor:pointer}
-  .podcast-name:hover{text-decoration:underline}
-  .clip-date{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);white-space:nowrap}
-  .clip-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;line-height:1.3;color:var(--ink)}
-  .clip-summary{font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .clip-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
-  .tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;background:var(--cream);color:var(--muted);border-radius:2px;text-transform:lowercase;letter-spacing:.3px;cursor:pointer}
-  .tag:hover{background:var(--ink);color:var(--paper)}
-  .clip-footer{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid var(--rule)}
-  .play-btn{display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;color:var(--ink);background:none;border:1px solid var(--ink);padding:5px 12px;cursor:pointer;border-radius:2px;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
-  .play-btn:hover,.play-btn.active{background:var(--ink);color:var(--paper)}
-  .clip-duration{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)}
-  .clip-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);animation:fadeUp .2s ease}
-  .clip-expand.open{display:block}
-  .snippet-box{background:var(--cream);border-left:3px solid var(--rust);padding:10px 14px;font-size:13px;line-height:1.6;color:#444;border-radius:0 2px 2px 0;margin-bottom:10px;font-family:'DM Sans',sans-serif}
-  .snippet-box mark{background:#ffe08a;color:var(--ink);padding:1px 2px;border-radius:2px;font-weight:500}
-  .clip-links{display:flex;gap:10px;flex-wrap:wrap}
-  .clip-link{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 10px;border:1px solid var(--rule);border-radius:2px;color:var(--ink);text-decoration:none;background:white;cursor:pointer;transition:all .15s;white-space:nowrap}
-  .clip-link:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .clip-link.primary{background:var(--rust);color:white;border-color:var(--rust)}
-  .clip-link.primary:hover{background:#a93226}
-  .expand-toggle{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
-  .expand-toggle:hover{color:var(--ink)}
-  .rating-wrap{margin-left:auto;display:flex;gap:3px;align-items:center}
-  .star{font-size:13px;color:var(--rule);cursor:pointer;transition:color .1s;line-height:1}
-  .star:hover,.star.lit{color:var(--gold)}
-  .now-playing{position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:var(--paper);padding:14px 40px;display:none;align-items:center;gap:20px;z-index:200;border-top:3px solid var(--rust)}
-  .now-playing.visible{display:flex}
-  .np-info{flex:1;min-width:0}
-  .np-podcast{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--rust);text-transform:uppercase;letter-spacing:1px}
-  .np-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .np-controls{display:flex;gap:12px;align-items:center}
-  .np-btn{background:none;border:1px solid #444;color:var(--paper);padding:6px 14px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;border-radius:2px;transition:border-color .15s;text-transform:uppercase;letter-spacing:.5px}
-  .np-btn:hover{border-color:var(--paper)}
-  .np-progress{flex:1;max-width:300px;height:3px;background:#333;border-radius:1px;cursor:pointer}
-  .np-progress-fill{height:100%;background:var(--rust);border-radius:1px;width:0%;transition:width .5s linear}
-  .np-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888;white-space:nowrap}
-  .np-close{background:none;border:none;color:#666;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1}
-  .np-close:hover{color:var(--paper)}
-  .empty{text-align:center;padding:80px 20px;color:var(--muted);grid-column:1/-1}
-  .empty-headline{font-family:'Playfair Display',serif;font-size:1.8rem;font-style:italic;margin-bottom:12px;color:var(--ink)}
-  .empty-sub{font-family:'IBM Plex Mono',monospace;font-size:12px}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  .clip-card{animation:fadeUp .3s ease both}
-  @media(max-width:700px){
-    .masthead,.controls,.main{padding-left:16px;padding-right:16px}
-    .clip-grid{grid-template-columns:1fr}
-    .now-playing{padding:12px 16px;flex-wrap:wrap}
-    .np-progress{display:none}
-    .search-input{width:130px;margin-left:0}
-    .ctrl-select{max-width:140px}
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:#f4f2ee;color:#1a1612;font-size:14px;}
+.hub{display:flex;height:100vh;overflow:hidden;}
+
+/* ── Sidebar ── */
+.sidebar{width:224px;flex-shrink:0;background:#fff;border-right:0.5px solid #e0dbd4;display:flex;flex-direction:column;overflow-y:auto;}
+.sidebar-head{padding:15px 14px 12px;border-bottom:0.5px solid #eee;flex-shrink:0;}
+.sidebar-logo{display:flex;align-items:center;gap:9px;}
+.sidebar-icon{width:32px;height:32px;background:#1a1612;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sidebar-name{font-family:'Libre Baskerville',serif;font-size:13px;font-weight:700;line-height:1.2;color:#1a1612;}
+.sidebar-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#aaa;margin-top:1px;}
+.sidebar-list{flex:1;padding:6px 0;}
+.sidebar-item{display:flex;align-items:center;gap:9px;padding:7px 12px;cursor:pointer;transition:background .12s;border-left:2.5px solid transparent;position:relative;}
+.sidebar-item:hover{background:#f7f5f2;}
+.sidebar-item.active{background:#fdf9f4;border-left-color:#8B2326;}
+.show-art{width:32px;height:32px;border-radius:6px;flex-shrink:0;background:#e8e0d4;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;color:#9a8878;text-align:center;line-height:1.1;overflow:hidden;}
+.show-art img{width:100%;height:100%;object-fit:cover;border-radius:6px;}
+.show-info{flex:1;min-width:0;}
+.show-name{font-size:11.5px;font-weight:500;color:#1a1612;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;}
+.show-count{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:#aaa;letter-spacing:0.3px;}
+.new-badge{width:7px;height:7px;border-radius:50%;background:#8B2326;flex-shrink:0;}
+
+/* ── Main column ── */
+.main-col{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;}
+
+/* ── Top bar ── */
+.topbar{background:#fff;border-bottom:0.5px solid #e0dbd4;padding:9px 18px;display:flex;align-items:center;gap:9px;flex-shrink:0;flex-wrap:wrap;}
+.search-wrap{flex:1;min-width:160px;position:relative;}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;}
+.search-inp{width:100%;padding:7px 12px 7px 32px;border:0.5px solid #ddd;background:#f8f6f3;border-radius:20px;font-family:'Barlow',sans-serif;font-size:13px;color:#1a1612;outline:none;}
+.search-inp:focus{border-color:#1a1612;background:#fff;}
+.top-select{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:0.3px;padding:6px 12px;border:0.5px solid #ddd;background:#fff;color:#1a1612;border-radius:20px;cursor:pointer;outline:none;max-width:180px;}
+.sort-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:0.5px;padding:6px 16px;border:1.5px solid #8B2326;background:transparent;color:#8B2326;border-radius:20px;cursor:pointer;font-weight:600;white-space:nowrap;}
+
+/* ── Episode banner ── */
+.ep-banner{background:#fff;border-bottom:0.5px solid #e8e3dc;padding:11px 18px;display:flex;align-items:center;gap:13px;flex-shrink:0;}
+.ep-art{width:46px;height:46px;border-radius:7px;background:#e8e0d4;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;color:#9a8878;text-align:center;line-height:1.2;overflow:hidden;}
+.ep-art img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
+.ep-title{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;color:#1a1612;line-height:1.3;}
+.ep-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:#aaa;letter-spacing:0.3px;margin-top:3px;}
+.ep-cc{color:#8B2326;font-weight:600;margin-left:8px;}
+
+/* ── Clips area ── */
+.clips-area{flex:1;overflow-y:auto;padding:14px 18px 100px;}
+.clips-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ── Clip card ── */
+.clip-card{background:#fff;border:0.5px solid #e4dfd8;border-radius:10px;padding:15px;display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s;}
+.clip-card:hover{box-shadow:0 2px 14px rgba(0,0,0,.07);}
+.clip-card.playing{border-color:#8B2326;box-shadow:0 0 0 1.5px #8B2326;}
+
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.card-show{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8B2326;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-show:hover{text-decoration:underline;}
+.card-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:#bbb;white-space:nowrap;flex-shrink:0;}
+
+.clip-quote{font-family:'Libre Baskerville',serif;font-style:italic;font-size:12.5px;color:#2a2420;line-height:1.6;border-left:2.5px solid #8B2326;padding-left:10px;}
+.clip-summary{font-size:12px;font-weight:300;color:#5a5248;line-height:1.55;}
+
+.clip-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.clip-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.4px;padding:2px 8px;background:#f0ebe3;color:#7a7068;border-radius:20px;cursor:pointer;transition:all .12s;}
+.clip-tag:hover{background:#1a1612;color:#fff;}
+.clip-tag.person{background:#ede4f5;color:#6a4a8a;}
+.clip-tag.person:hover{background:#6a4a8a;color:#fff;}
+
+/* ── Inline player ── */
+.clip-player{display:flex;align-items:center;gap:7px;}
+.play-btn{width:26px;height:26px;border-radius:50%;background:#1a1612;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .12s;}
+.play-btn:hover,.play-btn.on{background:#8B2326;}
+.play-btn svg{width:9px;height:10px;margin-left:1px;}
+.prog-bar{flex:1;height:3px;background:#e8e3dc;border-radius:2px;cursor:pointer;position:relative;}
+.prog-fill{height:100%;background:#8B2326;border-radius:2px;width:0%;transition:width .3s linear;}
+.clip-time{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:#bbb;white-space:nowrap;}
+
+/* ── Card footer ── */
+.card-foot{display:flex;align-items:center;gap:6px;padding-top:8px;border-top:0.5px solid #eee;flex-wrap:wrap;}
+.foot-btn{display:inline-flex;align-items:center;gap:4px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.4px;color:#5a5248;background:none;border:0.5px solid #ddd;border-radius:14px;padding:4px 10px;cursor:pointer;text-decoration:none;transition:all .12s;white-space:nowrap;}
+.foot-btn:hover{border-color:#1a1612;color:#1a1612;background:#f8f6f3;}
+.foot-btn.ep{color:#8B2326;border-color:#e4c4c4;}
+.foot-btn.ep:hover{background:#8B2326;color:#fff;border-color:#8B2326;}
+.foot-btn.share{color:#1a7a4a;border-color:#b8dfc9;}
+.foot-btn.share:hover{background:#1a7a4a;color:#fff;border-color:#1a7a4a;}
+
+/* ── Share popup ── */
+.share-popup{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1612;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:0.5px;padding:8px 18px;border-radius:20px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:999;}
+.share-popup.show{opacity:1;}
+
+/* ── Global player ── */
+.gplayer{background:#1a1612;color:#fff;padding:11px 20px;display:none;align-items:center;gap:16px;border-top:2px solid #8B2326;flex-shrink:0;}
+.gplayer.show{display:flex;}
+.gp-info{flex:1;min-width:0;}
+.gp-show{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#8B2326;}
+.gp-title{font-family:'Libre Baskerville',serif;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gp-ctrl{display:flex;gap:10px;align-items:center;}
+.gp-prog{flex:1;max-width:260px;height:2px;background:#333;cursor:pointer;border-radius:1px;}
+.gp-fill{height:100%;background:#8B2326;border-radius:1px;width:0%;transition:width .3s linear;}
+.gp-time{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:#666;white-space:nowrap;}
+.gp-btn{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;background:none;border:0.5px solid #444;color:#fff;padding:4px 12px;cursor:pointer;border-radius:2px;}
+.gp-btn:hover{border-color:#fff;}
+.gp-close{background:none;border:none;color:#555;font-size:16px;cursor:pointer;padding:0 4px;line-height:1;}
+.gp-close:hover{color:#fff;}
+
+/* ── Empty state ── */
+.empty{grid-column:1/-1;padding:70px 20px;text-align:center;}
+.empty-hed{font-family:'Libre Baskerville',serif;font-size:1.3rem;font-style:italic;color:#aaa;margin-bottom:8px;}
+.empty-sub{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#ccc;}
+
+@media(max-width:700px){
+  .sidebar{display:none;}
+  .clips-grid{grid-template-columns:1fr;}
+  .topbar{padding:8px 12px;}
+  .clips-area{padding:10px 12px 100px;}
+}
 </style>
 </head>
 <body>
+<div class="hub">
 
-<header class="masthead">
-  <div class="masthead-inner">
-    <div>
-      <div class="masthead-title">The Clip <span>Desk</span></div>
-      <div style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:11px;color:#888;margin-top:4px;letter-spacing:1px;">SPORTS MEDIA — AUDIO CLIPS</div>
-    </div>
-    <div class="masthead-meta" id="meta-date">Loading...</div>
-  </div>
-  <hr class="masthead-rule">
-</header>
-
-<div class="controls">
-  <div class="controls-inner">
-    <div class="controls-row">
-      <span class="filter-label">Topics</span>
-      <div class="filter-pills" id="topic-pills">
-        <button class="pill active" data-topic="all">All</button>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-logo">
+        <div class="sidebar-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="5.5" stroke="#fff" stroke-width="1.2"/>
+            <polygon points="6.5,5.5 11.5,8 6.5,10.5" fill="#fff"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-name">Dan's Podcast Hub</div>
+          <div class="sidebar-sub">Sports Media</div>
+        </div>
       </div>
     </div>
-    <div class="controls-row">
-      <span class="filter-label">Filter</span>
-      <select class="ctrl-select" id="podcast-select">
-        <option value="all">All podcasts</option>
-      </select>
-      <select class="ctrl-select" id="date-select">
-        <option value="all">Any date</option>
-        <option value="1">Today</option>
-        <option value="2">Last 2 days</option>
-        <option value="7">Last 7 days</option>
-        <option value="14">Last 14 days</option>
-        <option value="30">Last 30 days</option>
-      </select>
-      <select class="ctrl-select" id="sort-select">
-        <option value="newest">Newest first</option>
-        <option value="oldest">Oldest first</option>
-        <option value="quality">Top rated</option>
-      </select>
-      <input type="text" class="search-input" id="search" placeholder="Search clips, people…">
-      <button class="clear-btn" id="clear-btn" style="display:none">✕ Clear filters</button>
+    <div class="sidebar-list" id="sidebar-list"></div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-col">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#aaa" stroke-width="1.4">
+          <circle cx="5.5" cy="5.5" r="4"/><line x1="9" y1="9" x2="13" y2="13"/>
+        </svg>
+        <input class="search-inp" id="search" placeholder="Search clips, topics, people…">
+      </div>
+      <select class="top-select" id="topic-sel"><option value="all">All topics</option></select>
+      <select class="top-select" id="people-sel"><option value="all">All people</option></select>
+      <button class="sort-btn" id="sort-btn">Newest</button>
     </div>
+
+    <!-- Episode banner -->
+    <div class="ep-banner" id="ep-banner"></div>
+
+    <!-- Clips grid -->
+    <div class="clips-area">
+      <div class="clips-grid" id="clips-grid"></div>
+    </div>
+
+    <!-- Global player -->
+    <div class="gplayer" id="gplayer">
+      <div class="gp-info">
+        <div class="gp-show" id="gp-show">—</div>
+        <div class="gp-title" id="gp-title">—</div>
+      </div>
+      <div class="gp-ctrl">
+        <div class="gp-prog" id="gp-prog"><div class="gp-fill" id="gp-fill"></div></div>
+        <span class="gp-time" id="gp-time">0:00 / 0:00</span>
+        <button class="gp-btn" id="gp-pp">⏸ Pause</button>
+        <button class="gp-close" id="gp-close">✕</button>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<main class="main">
-  <div class="section-header">
-    <span class="section-title">Latest Clips</span>
-    <span class="section-count" id="clip-count">—</span>
-  </div>
-  <div class="clip-grid" id="clip-grid">
-    <div class="empty">
-      <div class="empty-headline">No clips yet.</div>
-      <div class="empty-sub">Run the pipeline to get started.</div>
-    </div>
-  </div>
-</main>
+<!-- Share popup -->
+<div class="share-popup" id="share-popup">Link copied to clipboard</div>
 
-<div class="now-playing" id="now-playing">
-  <div class="np-info">
-    <div class="np-podcast" id="np-podcast">—</div>
-    <div class="np-title" id="np-title">—</div>
-  </div>
-  <div class="np-controls">
-    <div class="np-progress" id="np-progress">
-      <div class="np-progress-fill" id="np-fill"></div>
-    </div>
-    <span class="np-time" id="np-time">0:00 / 0:00</span>
-    <button class="np-btn" id="np-playpause">⏸ Pause</button>
-    <button class="np-close" id="np-close">✕</button>
-  </div>
-</div>
-
-<audio id="audio-player" preload="none"></audio>
+<audio id="audio" preload="none"></audio>
 
 <script>
-let allClips=[],activeTopic='all',activePodcast='all',activeDays='all',activeSort='newest',searchQuery='',currentClipId=null;
-const audio=document.getElementById('audio-player');
+let allClips = [], shows = [], activeShow = 'all', activeSort = 'newest';
+let searchQ = '', activeTopic = 'all', activePerson = 'all', currentId = null;
+const audio = document.getElementById('audio');
+const NOW = Date.now();
+const HOUR48 = 48 * 60 * 60 * 1000;
 
-async function loadClips(){
-  try{const r=await fetch('clips.json?'+Date.now());if(!r.ok)throw new Error();allClips=await r.json()}
-  catch(e){allClips=[]}
-  buildTopicPills();buildPodcastDropdown();render();updateMeta();
+function fmt(s) {
+  s = Math.round(s || 0);
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function isNew48(iso) {
+  if (!iso) return false;
+  return (NOW - new Date(iso).getTime()) < HOUR48;
 }
 
-function updateMeta(){
-  const el=document.getElementById('meta-date');
-  el.innerHTML=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'<br>'+allClips.length+' CLIPS ARCHIVED';
+async function loadClips() {
+  try {
+    const r = await fetch('clips.json?' + Date.now());
+    if (!r.ok) throw new Error();
+    allClips = await r.json();
+  } catch(e) { allClips = []; }
+  buildShows();
+  buildFilters();
+  renderBanner();
+  renderGrid();
+  checkHash();
 }
 
-function buildTopicPills(){
-  const tc={};allClips.forEach(c=>(c.topics||[]).forEach(t=>{tc[t]=(tc[t]||0)+1}));
-  const sorted=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,14).map(([t])=>t);
-  const con=document.getElementById('topic-pills');
-  con.innerHTML='<button class="pill active" data-topic="all">All</button>';
-  sorted.forEach(t=>{const b=document.createElement('button');b.className='pill';b.dataset.topic=t;b.textContent=t;con.appendChild(b)});
-  con.addEventListener('click',e=>{
-    const b=e.target.closest('.pill');if(!b)return;
-    activeTopic=b.dataset.topic;
-    con.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));b.classList.add('active');
-    updateClearBtn();render();
+function buildShows() {
+  // Build show list from clips data
+  const map = {};
+  allClips.forEach(c => {
+    if (!map[c.podcast]) {
+      map[c.podcast] = { name: c.podcast, artwork: c.artwork || '', clips: 0, latest: '' };
+    }
+    map[c.podcast].clips++;
+    if (!map[c.podcast].latest || c.published > map[c.podcast].latest) {
+      map[c.podcast].latest = c.published;
+    }
+  });
+  shows = Object.values(map).sort((a, b) => b.clips - a.clips);
+
+  const el = document.getElementById('sidebar-list');
+  const allCount = allClips.length;
+
+  // "All podcasts" row
+  const allRow = document.createElement('div');
+  allRow.className = 'sidebar-item' + (activeShow === 'all' ? ' active' : '');
+  allRow.dataset.show = 'all';
+  allRow.innerHTML = `
+    <div class="show-art" style="background:#1a1612;">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.2"/>
+        <polygon points="5.5,4.5 10.5,7 5.5,9.5" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="show-info">
+      <div class="show-name">All podcasts</div>
+      <div class="show-count">${allCount} clips</div>
+    </div>`;
+  allRow.onclick = () => { activeShow = 'all'; buildShows(); renderBanner(); renderGrid(); };
+  el.innerHTML = '';
+  el.appendChild(allRow);
+
+  shows.forEach(s => {
+    const hasNew = isNew48(s.latest);
+    const row = document.createElement('div');
+    row.className = 'sidebar-item' + (activeShow === s.name ? ' active' : '');
+    row.dataset.show = s.name;
+
+    const artHtml = s.artwork
+      ? `<div class="show-art"><img src="${s.artwork}" alt="" onerror="this.parentElement.innerHTML='${s.name.slice(0,3).toUpperCase()}'"></div>`
+      : `<div class="show-art">${s.name.slice(0, 3).toUpperCase()}</div>`;
+
+    row.innerHTML = `
+      ${artHtml}
+      <div class="show-info">
+        <div class="show-name">${s.name}</div>
+        <div class="show-count">${s.clips} clip${s.clips !== 1 ? 's' : ''}</div>
+      </div>
+      ${hasNew ? '<div class="new-badge" title="New in last 48 hours"></div>' : ''}`;
+    row.onclick = () => { activeShow = s.name; buildShows(); renderBanner(); renderGrid(); };
+    el.appendChild(row);
   });
 }
 
-function buildPodcastDropdown(){
-  const pods=[...new Set(allClips.map(c=>c.podcast).filter(Boolean))].sort();
-  const sel=document.getElementById('podcast-select');
-  sel.innerHTML='<option value="all">All podcasts</option>';
-  pods.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o)});
+function buildFilters() {
+  const topics = new Set(), people = new Set();
+  allClips.forEach(c => {
+    (c.topics || []).forEach(t => topics.add(t));
+    (c.people || []).forEach(p => people.add(p));
+  });
+  const ts = document.getElementById('topic-sel');
+  ts.innerHTML = '<option value="all">All topics</option>' +
+    [...topics].sort().map(t => `<option value="${t}">${t}</option>`).join('');
+  const ps = document.getElementById('people-sel');
+  ps.innerHTML = '<option value="all">All people</option>' +
+    [...people].sort().map(p => `<option value="${p}">${p}</option>`).join('');
 }
 
-function filteredClips(){
-  let c=[...allClips];
-  if(activeTopic!=='all')c=c.filter(x=>(x.topics||[]).includes(activeTopic));
-  if(activePodcast!=='all')c=c.filter(x=>x.podcast===activePodcast);
-  if(activeDays!=='all'){const cut=new Date();cut.setDate(cut.getDate()-parseInt(activeDays));c=c.filter(x=>new Date(x.published)>=cut)}
-  if(searchQuery){const q=searchQuery.toLowerCase();c=c.filter(x=>(x.title||'').toLowerCase().includes(q)||(x.summary||'').toLowerCase().includes(q)||(x.podcast||'').toLowerCase().includes(q)||(x.episode||'').toLowerCase().includes(q)||(x.people||[]).some(p=>p.toLowerCase().includes(q))||(x.topics||[]).some(t=>t.toLowerCase().includes(q)))}
-  if(activeSort==='newest')c.sort((a,b)=>new Date(b.published)-new Date(a.published));
-  else if(activeSort==='oldest')c.sort((a,b)=>new Date(a.published)-new Date(b.published));
-  else if(activeSort==='quality')c.sort((a,b)=>(b.quality||0)-(a.quality||0));
+function renderBanner() {
+  const el = document.getElementById('ep-banner');
+  if (activeShow === 'all') {
+    el.innerHTML = `<div>
+      <div style="font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;color:#1a1612">All Podcasts</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:#aaa;margin-top:3px;">${allClips.length} clips across ${shows.length} shows</div>
+    </div>`;
+    return;
+  }
+  const show = shows.find(s => s.name === activeShow);
+  const sc = allClips.filter(c => c.podcast === activeShow);
+  const artHtml = show?.artwork
+    ? `<div class="ep-art"><img src="${show.artwork}" alt=""></div>`
+    : `<div class="ep-art">${activeShow.slice(0,3).toUpperCase()}</div>`;
+  el.innerHTML = `${artHtml}<div>
+    <div class="ep-title">${activeShow}</div>
+    <div class="ep-meta">${sc[0]?.published ? fmtDate(sc[0].published) : ''}<span class="ep-cc">${sc.length} clip${sc.length !== 1 ? 's' : ''}</span></div>
+  </div>`;
+}
+
+function filtered() {
+  let c = [...allClips];
+  if (activeShow !== 'all') c = c.filter(x => x.podcast === activeShow);
+  if (activeTopic !== 'all') c = c.filter(x => (x.topics || []).includes(activeTopic));
+  if (activePerson !== 'all') c = c.filter(x => (x.people || []).includes(activePerson));
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    c = c.filter(x =>
+      (x.title || '').toLowerCase().includes(q) ||
+      (x.summary || '').toLowerCase().includes(q) ||
+      (x.podcast || '').toLowerCase().includes(q) ||
+      (x.episode || '').toLowerCase().includes(q) ||
+      (x.people || []).some(p => p.toLowerCase().includes(q)) ||
+      (x.topics || []).some(t => t.toLowerCase().includes(q)) ||
+      (x.transcript_snippet || '').toLowerCase().includes(q)
+    );
+  }
+  if (activeSort === 'newest') c.sort((a, b) => new Date(b.published) - new Date(a.published));
+  else c.sort((a, b) => new Date(a.published) - new Date(b.published));
   return c;
 }
 
-function isFiltered(){return activeTopic!=='all'||activePodcast!=='all'||activeDays!=='all'||searchQuery!==''}
-function updateClearBtn(){document.getElementById('clear-btn').style.display=isFiltered()?'block':'none'}
-
-function clearAll(){
-  activeTopic='all';activePodcast='all';activeDays='all';searchQuery='';activeSort='newest';
-  document.getElementById('podcast-select').value='all';
-  document.getElementById('date-select').value='all';
-  document.getElementById('sort-select').value='newest';
-  document.getElementById('search').value='';
-  document.getElementById('topic-pills').querySelectorAll('.pill').forEach((p,i)=>p.classList.toggle('active',i===0));
-  updateClearBtn();render();
-}
-
-function render(){
-  const clips=filteredClips();
-  const grid=document.getElementById('clip-grid');
-  document.getElementById('clip-count').textContent=clips.length+' clip'+(clips.length!==1?'s':'');
-  if(!clips.length){
-    grid.innerHTML='<div class="empty"><div class="empty-headline">'+(isFiltered()?'Nothing matched.':'No clips yet.')+'</div><div class="empty-sub">'+(isFiltered()?'Try adjusting your filters.':'Run the pipeline to get started.')+'</div></div>';
+function renderGrid() {
+  const fc = filtered();
+  const g = document.getElementById('clips-grid');
+  if (!fc.length) {
+    g.innerHTML = `<div class="empty">
+      <div class="empty-hed">No clips found.</div>
+      <div class="empty-sub">Adjust filters or run the pipeline</div>
+    </div>`;
     return;
   }
-  grid.innerHTML=clips.map((c,i)=>clipCard(c,i)).join('');
-  grid.querySelectorAll('.play-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();playClip(b.closest('.clip-card').dataset.id)}));
-  grid.querySelectorAll('.star').forEach(s=>s.addEventListener('click',e=>{e.stopPropagation();rateClip(s.closest('.clip-card').dataset.id,parseInt(s.dataset.val))}));
-  grid.querySelectorAll('.podcast-name').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();activePodcast=el.dataset.podcast;document.getElementById('podcast-select').value=activePodcast;updateClearBtn();render()}));
-  grid.querySelectorAll('.tag[data-topic]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();activeTopic=el.dataset.topic;document.getElementById('topic-pills').querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.topic===activeTopic));updateClearBtn();render()}));
-  if(currentClipId){const card=grid.querySelector('[data-id="'+currentClipId+'"]');if(card){card.classList.add('playing');const pb=card.querySelector('.play-btn');pb.classList.add('active');pb.innerHTML='⏸ Playing'}}
-  const ratings=JSON.parse(localStorage.getItem('clip_ratings')||'{}');
-  grid.querySelectorAll('.clip-card').forEach(card=>{const id=card.dataset.id;if(ratings[id])card.querySelectorAll('.star').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.val)<=ratings[id]))});
+
+  g.innerHTML = fc.map(c => {
+    const isPlay = c.id === currentId;
+    const tags = (c.topics || []).slice(0, 3).map(t =>
+      `<span class="clip-tag" data-t="${t}">${t}</span>`).join('');
+    const ppl = (c.people || []).slice(0, 3).map(p =>
+      `<span class="clip-tag person" data-p="${p}">${p}</span>`).join('');
+    const quoteText = c.transcript_snippet
+      ? `…${c.transcript_snippet}…`
+      : (c.title || '');
+
+    return `<div class="clip-card${isPlay ? ' playing' : ''}" data-id="${c.id}">
+      <div class="card-top">
+        <span class="card-show" data-show="${c.podcast}">${c.podcast}</span>
+        <span class="card-date">${fmtDate(c.published)}</span>
+      </div>
+      <div class="clip-quote">${quoteText}</div>
+      ${c.summary ? `<div class="clip-summary">${c.summary}</div>` : ''}
+      <div class="clip-tags">${tags}${ppl}</div>
+      <div class="clip-player">
+        <button class="play-btn${isPlay ? ' on' : ''}" data-play="${c.id}">
+          <svg viewBox="0 0 9 10" fill="white"><polygon points="0,0 9,5 0,10"/></svg>
+        </button>
+        <div class="prog-bar" data-prog="${c.id}"><div class="prog-fill" id="pf-${c.id}"></div></div>
+        <span class="clip-time" id="ct-${c.id}">0:00 / ${fmt(c.duration)}</span>
+      </div>
+      <div class="card-foot">
+        <a class="foot-btn ep" href="${c.episode_url || '#'}" target="_blank" rel="noopener">
+          Full episode →
+        </a>
+        <button class="foot-btn share" data-share="${c.id}">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="9" cy="2" r="1.3"/><circle cx="2" cy="5.5" r="1.3"/><circle cx="9" cy="9" r="1.3"/>
+            <line x1="3.2" y1="6.1" x2="7.8" y2="8.4"/><line x1="7.8" y1="2.6" x2="3.2" y2="4.9"/>
+          </svg>
+          Share clip
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Wire events
+  g.querySelectorAll('[data-play]').forEach(b =>
+    b.onclick = e => { e.stopPropagation(); playClip(b.dataset.play); });
+  g.querySelectorAll('.clip-tag[data-t]').forEach(el =>
+    el.onclick = e => { e.stopPropagation(); activeTopic = el.dataset.t; document.getElementById('topic-sel').value = activeTopic; renderGrid(); });
+  g.querySelectorAll('.clip-tag[data-p]').forEach(el =>
+    el.onclick = e => { e.stopPropagation(); activePerson = el.dataset.p; document.getElementById('people-sel').value = activePerson; renderGrid(); });
+  g.querySelectorAll('.card-show[data-show]').forEach(el =>
+    el.onclick = e => { e.stopPropagation(); activeShow = el.dataset.show; buildShows(); renderBanner(); renderGrid(); });
+  g.querySelectorAll('[data-share]').forEach(b =>
+    b.onclick = e => { e.stopPropagation(); shareClip(b.dataset.share); });
+  g.querySelectorAll('.prog-bar[data-prog]').forEach(bar =>
+    bar.onclick = e => {
+      if (!audio.duration) return;
+      const r = bar.getBoundingClientRect();
+      audio.currentTime = (e.clientX - r.left) / r.width * audio.duration;
+    });
 }
 
-function fmt(s){s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
-function fmtDate(iso){if(!iso)return'';return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
-
-function buildSnippet(c){
-  const s=c.transcript_snippet;
-  if(!s||!s.text)return '<em style="color:var(--muted);font-size:12px;">No transcript snippet available.</em>';
-  const t=s.text,hs=s.highlight_start||0,hl=s.highlight_len||0;
-  if(!hl)return t;
-  return t.slice(0,hs)+'<mark>'+t.slice(hs,hs+hl)+'</mark>'+t.slice(hs+hl);
-}
-function shareUrl(id){return location.origin+location.pathname+'#clip-'+id}
-function clipCard(c,i){
-  const avg=c.avg_rating||0;
-  const stars=[1,2,3,4,5].map(n=>'<span class="star '+(n<=avg?'lit':'')+'" data-val="'+n+'">★</span>').join('');
-  const tags=(c.topics||[]).slice(0,3).map(t=>'<span class="tag" data-topic="'+t+'">'+t+'</span>').join('');
-  const people=(c.people||[]).slice(0,3).map(p=>'<span class="tag" style="background:#f0e8d8;color:#7a6a5a;">'+p+'</span>').join('');
-  const epLink=c.episode_url?'<a class="clip-link" href="'+c.episode_url+'" target="_blank" rel="noopener">⟶ Full episode</a>':'';
-  const expand='<div class="clip-expand" id="expand-'+c.id+'"><div class="snippet-box">'+buildSnippet(c)+'</div><div class="clip-links"><a class="clip-link primary" href="'+shareUrl(c.id)+'" onclick="copyShare(event,''+c.id+'')">⎘ Copy share link</a>'+epLink+'</div></div>';
-  return '<div class="clip-card" data-id="'+c.id+'" style="animation-delay:'+i*35+'ms"><div class="clip-card-top"><div class="podcast-name" data-podcast="'+(c.podcast||'')+'">'+( c.podcast||'')+'</div><div class="clip-date">'+fmtDate(c.published)+'</div></div><div class="clip-title">'+(c.title||'Untitled')+'</div><div class="clip-summary">'+(c.summary||'')+'</div><div class="clip-tags">'+tags+people+'</div>'+expand+'<div class="clip-footer"><button class="play-btn"><span>▶</span> Play</button><span class="clip-duration">'+fmt(c.duration)+'</span><button class="expand-toggle" onclick="toggleExpand(event,'expand-'+c.id+'')">Details ▾</button><div class="rating-wrap">'+stars+'</div></div></div>';
-}
-function toggleExpand(e,id){
-  e.stopPropagation();
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.classList.toggle('open');
-  e.target.textContent=el.classList.contains('open')?'Details ▴':'Details ▾';
-}
-function copyShare(e,id){
-  e.preventDefault();
-  const url=shareUrl(id);
-  navigator.clipboard.writeText(url).then(()=>{
-    e.target.textContent='✓ Copied!';
-    setTimeout(()=>e.target.textContent='⎘ Copy share link',2000);
-  }).catch(()=>window.open(url,'_blank'));
+function shareClip(id) {
+  const url = location.href.split('#')[0] + '#clip-' + id;
+  navigator.clipboard.writeText(url).catch(() => {});
+  const popup = document.getElementById('share-popup');
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 2000);
 }
 
-function playClip(id){
-  const clip=allClips.find(c=>c.id===id);if(!clip)return;
-  if(currentClipId===id&&!audio.paused){audio.pause();return}
-  currentClipId=id;audio.src=clip.audio_url;audio.play().catch(()=>{});
-  document.getElementById('np-podcast').textContent=clip.podcast||'';
-  document.getElementById('np-title').textContent=clip.title||'';
-  document.getElementById('now-playing').classList.add('visible');
-  document.getElementById('np-playpause').textContent='⏸ Pause';
-  render();
+function playClip(id) {
+  const c = allClips.find(x => x.id === id);
+  if (!c) return;
+  if (currentId === id && !audio.paused) { audio.pause(); return; }
+  currentId = id;
+  if (c.audio_url) { audio.src = c.audio_url; audio.play().catch(() => {}); }
+  document.getElementById('gp-show').textContent = c.podcast || '';
+  document.getElementById('gp-title').textContent = c.episode || c.title || '';
+  document.getElementById('gplayer').classList.add('show');
+  document.getElementById('gp-pp').textContent = '⏸ Pause';
+  renderGrid();
 }
 
-audio.addEventListener('timeupdate',()=>{const p=audio.duration?(audio.currentTime/audio.duration*100):0;document.getElementById('np-fill').style.width=p+'%';document.getElementById('np-time').textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration)});
-audio.addEventListener('ended',()=>{currentClipId=null;render()});
-audio.addEventListener('pause',()=>document.getElementById('np-playpause').textContent='▶ Play');
-audio.addEventListener('play',()=>document.getElementById('np-playpause').textContent='⏸ Pause');
-document.getElementById('np-playpause').addEventListener('click',()=>audio.paused?audio.play():audio.pause());
-document.getElementById('np-close').addEventListener('click',()=>{audio.pause();audio.src='';currentClipId=null;document.getElementById('now-playing').classList.remove('visible');render()});
-document.getElementById('np-progress').addEventListener('click',e=>{if(!audio.duration)return;const r=e.currentTarget.getBoundingClientRect();audio.currentTime=(e.clientX-r.left)/r.width*audio.duration});
+audio.ontimeupdate = () => {
+  const p = audio.duration ? audio.currentTime / audio.duration * 100 : 0;
+  document.getElementById('gp-fill').style.width = p + '%';
+  document.getElementById('gp-time').textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
+  const pf = document.getElementById('pf-' + currentId);
+  const ct = document.getElementById('ct-' + currentId);
+  if (pf) pf.style.width = p + '%';
+  if (ct) ct.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
+};
+audio.onended = () => { currentId = null; renderGrid(); };
+audio.onpause = () => document.getElementById('gp-pp').textContent = '▶ Play';
+audio.onplay  = () => document.getElementById('gp-pp').textContent = '⏸ Pause';
 
-function rateClip(id,val){const ratings=JSON.parse(localStorage.getItem('clip_ratings')||'{}');ratings[id]=val;localStorage.setItem('clip_ratings',JSON.stringify(ratings));const clip=allClips.find(c=>c.id===id);if(clip)clip.avg_rating=val;render()}
+document.getElementById('gp-pp').onclick = () => audio.paused ? audio.play() : audio.pause();
+document.getElementById('gp-close').onclick = () => {
+  audio.pause(); audio.src = ''; currentId = null;
+  document.getElementById('gplayer').classList.remove('show');
+  renderGrid();
+};
+document.getElementById('gp-prog').onclick = e => {
+  if (!audio.duration) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  audio.currentTime = (e.clientX - r.left) / r.width * audio.duration;
+};
+document.getElementById('search').oninput = e => { searchQ = e.target.value.trim(); renderGrid(); };
+document.getElementById('topic-sel').onchange = e => { activeTopic = e.target.value; renderGrid(); };
+document.getElementById('people-sel').onchange = e => { activePerson = e.target.value; renderGrid(); };
+document.getElementById('sort-btn').onclick = () => {
+  activeSort = activeSort === 'newest' ? 'oldest' : 'newest';
+  document.getElementById('sort-btn').textContent = activeSort === 'newest' ? 'Newest' : 'Oldest';
+  renderGrid();
+};
 
-document.getElementById('podcast-select').addEventListener('change',e=>{activePodcast=e.target.value;updateClearBtn();render()});
-document.getElementById('date-select').addEventListener('change',e=>{activeDays=e.target.value;updateClearBtn();render()});
-document.getElementById('sort-select').addEventListener('change',e=>{activeSort=e.target.value;render()});
-document.getElementById('search').addEventListener('input',e=>{searchQuery=e.target.value.trim();updateClearBtn();render()});
-document.getElementById('clear-btn').addEventListener('click',clearAll);
-
-// Hash routing — pre-load clip from URL #clip-{id}
-function handleHash(){
-  const hash=location.hash;
-  if(!hash.startsWith('#clip-'))return;
-  const id=hash.slice(6);
-  const clip=allClips.find(c=>c.id===id);
-  if(!clip)return;
-  // Scroll to card
-  const card=document.querySelector('[data-id="'+id+'"]');
-  if(card){card.scrollIntoView({behavior:'smooth',block:'center'});}
-  // Auto-play
-  playClip(id);
-  // Open expand panel
-  const expand=document.getElementById('expand-'+id);
-  if(expand){expand.classList.add('open');}
+// Hash routing — load clip from URL
+function checkHash() {
+  const hash = location.hash;
+  if (!hash.startsWith('#clip-')) return;
+  const id = hash.slice(6);
+  const clip = allClips.find(c => c.id === id);
+  if (!clip) return;
+  activeShow = clip.podcast;
+  buildShows(); renderBanner(); renderGrid();
+  setTimeout(() => {
+    const card = document.querySelector(`[data-id="${id}"]`);
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    playClip(id);
+  }, 300);
 }
 
-async function loadClipsAndRoute(){
-  await loadClips();
-  handleHash();
-}
-loadClipsAndRoute();
+loadClips();
 </script>
-
-
-</body></html>
+</body>
+</html>
