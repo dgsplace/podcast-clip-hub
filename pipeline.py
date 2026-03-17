@@ -233,6 +233,8 @@ def transcribe(audio_path: str) -> dict | None:
     return None
 
 # ── Keyword clip finder ──────────────────────────────────────────────────────
+PERSON_MENTION_THRESHOLD = 10  # mentions to trigger full-episode clip
+
 def find_keyword_clips(transcript: dict, episode: dict) -> list:
     words = transcript.get("words", [])
     if not words:
@@ -240,8 +242,41 @@ def find_keyword_clips(transcript: dict, episode: dict) -> list:
 
     clips = []
     matched_ranges = []
+    # Count mentions per keyword to detect high-frequency persons
+    mention_counts = {}
 
     for keyword in KEYWORD_TOPICS:
+        kw_lower = keyword.lower()
+        kw_words = kw_lower.split()
+        kw_len = len(kw_words)
+        mention_counts[keyword] = 0
+
+        for i, word in enumerate(words):
+            if i + kw_len > len(words):
+                break
+            chunk = " ".join(w.get("text", "").lower().strip(".,!?\"'") for w in words[i:i+kw_len])
+            if chunk == kw_lower:
+                mention_counts[keyword] += 1
+
+    # Check for keywords (typically person names) mentioned 10+ times
+    # For these, create a single full-episode clip instead of many snippets
+    full_episode_keywords = [k for k, count in mention_counts.items() if count >= PERSON_MENTION_THRESHOLD]
+    skip_keywords = set(full_episode_keywords)
+
+    for keyword in full_episode_keywords:
+        total_dur = words[-1].get("end", 0) / 1000.0 if words else 0
+        clips.append({
+            "keyword": keyword,
+            "clip_start": 0,
+            "clip_end": total_dur,
+            "transcript_snippet": f"<mark>{keyword}</mark> is mentioned {mention_counts[keyword]} times in this episode.",
+            "full_episode": True,
+        })
+
+    # Normal clip detection for remaining keywords
+    for keyword in KEYWORD_TOPICS:
+        if keyword in skip_keywords:
+            continue
         kw_lower = keyword.lower()
         kw_words = kw_lower.split()
         kw_len = len(kw_words)
@@ -254,7 +289,6 @@ def find_keyword_clips(transcript: dict, episode: dict) -> list:
                 match_start = words[i].get("start", 0) / 1000.0
                 match_end   = words[i + kw_len - 1].get("end", 0) / 1000.0
 
-                # Deduplicate overlapping matches
                 overlapping = False
                 for range_start, range_end in matched_ranges:
                     if not (match_end < range_start or match_start > range_end):
@@ -267,14 +301,12 @@ def find_keyword_clips(transcript: dict, episode: dict) -> list:
                 clip_start = max(0, match_start - CLIP_BEFORE_SECS)
                 clip_end   = match_end + CLIP_AFTER_SECS
 
-                # Build transcript snippet (~SNIPPET_WORDS words around match)
                 half = SNIPPET_WORDS // 2
                 word_times = [(w.get("start", 0) / 1000.0, w.get("text", "")) for w in words]
                 match_word_idx = min(range(len(word_times)), key=lambda x: abs(word_times[x][0] - match_start))
                 snip_start = max(0, match_word_idx - half)
                 snip_end   = min(len(word_times), match_word_idx + half)
                 snippet_words = [w[1] for w in word_times[snip_start:snip_end]]
-                # Highlight the keyword in the snippet
                 snippet_text = " ".join(snippet_words)
                 snippet_text = re.sub(
                     re.escape(keyword),
@@ -288,6 +320,7 @@ def find_keyword_clips(transcript: dict, episode: dict) -> list:
                     "clip_start": clip_start,
                     "clip_end":   clip_end,
                     "transcript_snippet": snippet_text,
+                    "full_episode": False,
                 })
 
     return clips
@@ -373,6 +406,21 @@ def upload_to_r2(local_path: str, key: str) -> str | None:
     except Exception as exc:
         log.warning("  R2 upload failed: %s", exc)
         return None
+
+# ── Extract people mentioned in context of a keyword ─────────────────────────
+def extract_people(keyword: str, transcript: dict) -> list:
+    """Return list of person names from KEYWORD_TOPICS found near this keyword."""
+    # Return all people-like keywords that appear in the transcript
+    from config import KEYWORD_TOPICS
+    text = (transcript.get("text") or "").lower()
+    found = []
+    for kw in KEYWORD_TOPICS:
+        # Heuristic: person names contain spaces and start with uppercase
+        words = kw.split()
+        if len(words) >= 2 and words[0][0].isupper() if words[0] else False:
+            if kw.lower() in text and kw != keyword:
+                found.append(kw)
+    return found[:5]
 
 # ── Process one episode ──────────────────────────────────────────────────────
 def process_episode(episode: dict, seen: set) -> list:
