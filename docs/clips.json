@@ -1,5 +1,24 @@
 [
   {
+    "id": "cae629561a97_608",
+    "podcast": "SBJ Morning Buzzcast",
+    "artwork": "https://image.simplecastcdn.com/images/df0613a7-f809-4315-8585-6a44edfcc664/5ec9b022-f091-43c1-bb34-48c9b449dd7b/3000x3000/sbj-morningbuzzcast-podcast-icon-3000x3000.jpg?aid=rss_feed",
+    "episode": "SBJ Morning Buzzcast: March 17, 2026",
+    "episode_url": "https://sbj-morning-buzzcast.sportsbusinessjournal.com/episodes/sbj-morning-buzzcast-march-17-2026-vWGKngMP",
+    "published": "2026-03-17T12:02:54+00:00",
+    "title": "direct to consumer \u2014 SBJ Morning Buzzcast",
+    "summary": "",
+    "topics": [
+      "direct to consumer"
+    ],
+    "people": [],
+    "transcript_snippet": "on and off the track. Third nominee for Executive of the Year, Jimmy Pitaro at espn. He of course led the relaunch of their new <mark>direct to consumer</mark> ESPN app. They of course closed the deal for NFL Media. Also renegotiated a media deal with Major League Baseball. Fourth nominee,",
+    "matched_keyword": "direct to consumer",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/cae629561a97_608.mp3",
+    "duration": 51.19999999999993,
+    "clip_type": "keyword"
+  },
+  {
     "id": "470974845acb_218",
     "podcast": "The Town with Matthew Belloni",
     "artwork": "https://megaphone.imgix.net/podcasts/65cb6846-98da-11ec-ae8b-ab10844a5b35/image/dffc46446e1323b34b80460927876c8b.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
