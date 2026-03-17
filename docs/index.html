@@ -63,7 +63,7 @@ body{font-family:'Barlow',sans-serif;background:#f4f2ee;color:#1a1612;font-size:
 .card-show:hover{text-decoration:underline;}
 .card-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:#bbb;white-space:nowrap;flex-shrink:0;}
 
-.clip-quote{font-family:'Libre Baskerville',serif;font-style:italic;font-size:12.5px;color:#2a2420;line-height:1.6;border-left:2.5px solid #8B2326;padding-left:10px;}
+.clip-quote{font-family:'Libre Baskerville',serif;font-size:12.5px;color:#2a2420;line-height:1.6;border-left:2.5px solid #8B2326;padding-left:10px;}
 .clip-summary{font-size:12px;font-weight:300;color:#5a5248;line-height:1.55;}
 
 .clip-tags{display:flex;gap:4px;flex-wrap:wrap;}
@@ -223,14 +223,26 @@ async function loadClips() {
   checkHash();
 }
 
+const ALL_PODCAST_NAMES = [
+  "Sports Business Radio","SBJ Morning Buzzcast","SBJ Sports Media Podcast",
+  "The Joe Pomp Show","Pardon My Take","The Bill Simmons Podcast",
+  "The Ryen Russillo Podcast","The Herd with Colin Cowherd","The Varsity",
+  "Marchand Sports Media","Sporticast","Sports Media with Richard Deitsch",
+  "The Press Box","The Town with Matthew Belloni","Awful Announcing Podcast",
+  "Pablo Torre Finds Out","SI Media with Jimmy Traina","Sports Media Watch Podcast"
+];
+
 function buildShows() {
-  // Build show list from clips data
   const map = {};
+  // Seed all known shows with 0 clips first
+  ALL_PODCAST_NAMES.forEach(name => {
+    map[name] = { name, artwork: '', clips: 0, latest: '' };
+  });
+  // Fill in actual clip data
   allClips.forEach(c => {
-    if (!map[c.podcast]) {
-      map[c.podcast] = { name: c.podcast, artwork: c.artwork || '', clips: 0, latest: '' };
-    }
+    if (!map[c.podcast]) map[c.podcast] = { name: c.podcast, artwork: c.artwork || '', clips: 0, latest: '' };
     map[c.podcast].clips++;
+    map[c.podcast].artwork = map[c.podcast].artwork || c.artwork || '';
     if (!map[c.podcast].latest || c.published > map[c.podcast].latest) {
       map[c.podcast].latest = c.published;
     }
@@ -240,7 +252,6 @@ function buildShows() {
   const el = document.getElementById('sidebar-list');
   const allCount = allClips.length;
 
-  // "All podcasts" row
   const allRow = document.createElement('div');
   allRow.className = 'sidebar-item' + (activeShow === 'all' ? ' active' : '');
   allRow.dataset.show = 'all';
@@ -260,7 +271,8 @@ function buildShows() {
   el.appendChild(allRow);
 
   shows.forEach(s => {
-    const hasNew = isNew48(s.latest);
+    // Only show new badge when NOT the active show
+    const hasNew = isNew48(s.latest) && activeShow !== s.name;
     const row = document.createElement('div');
     row.className = 'sidebar-item' + (activeShow === s.name ? ' active' : '');
     row.dataset.show = s.name;
@@ -281,15 +293,24 @@ function buildShows() {
   });
 }
 
+function capFirst(s) {
+  if (!s) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 function buildFilters() {
   const topics = new Set(), people = new Set();
   allClips.forEach(c => {
-    (c.topics || []).forEach(t => topics.add(t));
-    (c.people || []).forEach(p => people.add(p));
+    (c.topics || []).forEach(t => {
+      // Only add to topics if it's not a person name
+      const isPerson = (c.people || []).some(p => p.toLowerCase() === t.toLowerCase());
+      if (!isPerson) topics.add(t);
+    });
+    (c.people || []).forEach(p => { if (p && p.trim()) people.add(p.trim()); });
   });
   const ts = document.getElementById('topic-sel');
   ts.innerHTML = '<option value="all">All topics</option>' +
-    [...topics].sort().map(t => `<option value="${t}">${t}</option>`).join('');
+    [...topics].sort().map(t => `<option value="${t}">${capFirst(t)}</option>`).join('');
   const ps = document.getElementById('people-sel');
   ps.innerHTML = '<option value="all">All people</option>' +
     [...people].sort().map(p => `<option value="${p}">${p}</option>`).join('');
@@ -350,17 +371,20 @@ function renderGrid() {
 
   g.innerHTML = fc.map(c => {
     const isPlay = c.id === currentId;
-    const tags = (c.topics || []).slice(0, 3).map(t =>
-      `<span class="clip-tag" data-t="${t}">${t}</span>`).join('');
+    const tags = (c.topics || []).slice(0, 3).filter(t => !(c.people||[]).some(p=>p.toLowerCase()===t.toLowerCase())).map(t =>
+      `<span class="clip-tag" data-t="${t}">${capFirst(t)}</span>`).join('');
     const ppl = (c.people || []).slice(0, 3).map(p =>
       `<span class="clip-tag person" data-p="${p}">${p}</span>`).join('');
     const quoteText = c.transcript_snippet
       ? `…${c.transcript_snippet}…`
       : (c.title || '');
+    const guestsHtml = (c.people && c.people.length > 0)
+      ? ` <span style="font-weight:400;color:#9a9288;font-size:10px;">(${c.people.slice(0,3).join(', ')})</span>`
+      : '';
 
     return `<div class="clip-card${isPlay ? ' playing' : ''}" data-id="${c.id}">
       <div class="card-top">
-        <span class="card-show" data-show="${c.podcast}">${c.podcast}</span>
+        <span class="card-show" data-show="${c.podcast}">${c.podcast}${guestsHtml}</span>
         <span class="card-date">${fmtDate(c.published)}</span>
       </div>
       <div class="clip-quote">${quoteText}</div>
