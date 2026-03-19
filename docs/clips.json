@@ -1,5 +1,62 @@
 [
   {
+    "id": "fb685a15d047_83",
+    "podcast": "The Town with Matthew Belloni",
+    "artwork": "https://megaphone.imgix.net/podcasts/65cb6846-98da-11ec-ae8b-ab10844a5b35/image/dffc46446e1323b34b80460927876c8b.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "The NFL's Billion-Dollar Cash Grab and Whether There\u2019s Any Left for Film and TV",
+    "episode_url": "https://traffic.megaphone.fm/GLT7424234428.mp3",
+    "published": "2026-03-18T23:22:00+00:00",
+    "title": "Skydance \u2014 The Town with Matthew Belloni",
+    "summary": "",
+    "topics": [
+      "Skydance"
+    ],
+    "people": [],
+    "transcript_snippet": "theory is what's going on with the NFL right now. Because the NBA recently closed new deals worth about $77 billion. And because of the <mark>Skydance</mark> deal where they bought Paramount and the change of control provision in CBS's deal for Sunday afternoon football games, the NFL has reopened its",
+    "matched_keyword": "Skydance",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/fb685a15d047_83.mp3",
+    "duration": 50.75999999999999,
+    "clip_type": "keyword"
+  },
+  {
+    "id": "fb685a15d047_398",
+    "podcast": "The Town with Matthew Belloni",
+    "artwork": "https://megaphone.imgix.net/podcasts/65cb6846-98da-11ec-ae8b-ab10844a5b35/image/dffc46446e1323b34b80460927876c8b.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "The NFL's Billion-Dollar Cash Grab and Whether There\u2019s Any Left for Film and TV",
+    "episode_url": "https://traffic.megaphone.fm/GLT7424234428.mp3",
+    "published": "2026-03-18T23:22:00+00:00",
+    "title": "Skydance \u2014 The Town with Matthew Belloni",
+    "summary": "",
+    "topics": [
+      "Skydance"
+    ],
+    "people": [],
+    "transcript_snippet": "that's where we are right now. CBS is going to be the first one because there's a change of control provision that stems from the <mark>Skydance</mark> Paramount deal that allows the league to potentially pull away NFL rights altogether if they wanted from CBS in 2027. So the NFL, they",
+    "matched_keyword": "Skydance",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/fb685a15d047_398.mp3",
+    "duration": 50.68000000000001,
+    "clip_type": "keyword"
+  },
+  {
+    "id": "fb685a15d047_1396",
+    "podcast": "The Town with Matthew Belloni",
+    "artwork": "https://megaphone.imgix.net/podcasts/65cb6846-98da-11ec-ae8b-ab10844a5b35/image/dffc46446e1323b34b80460927876c8b.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "The NFL's Billion-Dollar Cash Grab and Whether There\u2019s Any Left for Film and TV",
+    "episode_url": "https://traffic.megaphone.fm/GLT7424234428.mp3",
+    "published": "2026-03-18T23:22:00+00:00",
+    "title": "Rob Manfred \u2014 The Town with Matthew Belloni",
+    "summary": "",
+    "topics": [
+      "Rob Manfred"
+    ],
+    "people": [],
+    "transcript_snippet": "NFL is now so dominant? Yeah, so. So that was good lead in. I think they differ. I think for Major League Baseball. I believe <mark>Rob Manfred</mark> wants to do sort of a complete rewrite of the whole media landscape. Not only will they have access to at least some",
+    "matched_keyword": "Rob Manfred",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/fb685a15d047_1396.mp3",
+    "duration": 50.960000000000036,
+    "clip_type": "keyword"
+  },
+  {
     "id": "27de25cf7e2b_95",
     "podcast": "The Varsity",
     "artwork": "https://megaphone.imgix.net/podcasts/6fa89856-58b9-11ef-bfa8-af3c1c52a7c5/image/6ee8d61495fe5aa724ebe77cb2c604d7.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
