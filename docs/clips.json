@@ -1,5 +1,43 @@
 [
   {
+    "id": "b90043349f65_331",
+    "podcast": "Sports Media with Richard Deitsch",
+    "artwork": "https://megaphone.imgix.net/podcasts/a81ff0fe-0f94-11e9-adc8-e7fb890b88f4/image/97a1ffd3d951eeb3db936c4811985d60.jpeg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "Sports Media Roundtable: The incredible WBC viewership numbers and Barry Bonds joins Netflix",
+    "episode_url": "https://pdst.fm/e/pscrb.fm/rss/p/tracking.swap.fm/track/v9Uiw3bGr54f6BVZKSyc/traffic.megaphone.fm/CAD8446624365.mp3?updated=1774041362",
+    "published": "2026-03-21T10:00:00+00:00",
+    "title": "Netflix deal \u2014 Sports Media with Richard Deitsch",
+    "summary": "",
+    "topics": [
+      "Netflix deal"
+    ],
+    "people": [],
+    "transcript_snippet": "to me? I didn't get any of those press releases in my inbox during the WBC for global viewership, which makes me wonder if that <mark>Netflix deal</mark> in Japan, it was a bust, I think. I don't know if I don't remember if it was my colleague at sbj, Austin",
+    "matched_keyword": "Netflix deal",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/b90043349f65_331.mp3",
+    "duration": 50.64000000000004,
+    "clip_type": "keyword"
+  },
+  {
+    "id": "b90043349f65_240",
+    "podcast": "Sports Media with Richard Deitsch",
+    "artwork": "https://megaphone.imgix.net/podcasts/a81ff0fe-0f94-11e9-adc8-e7fb890b88f4/image/97a1ffd3d951eeb3db936c4811985d60.jpeg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "Sports Media Roundtable: The incredible WBC viewership numbers and Barry Bonds joins Netflix",
+    "episode_url": "https://pdst.fm/e/pscrb.fm/rss/p/tracking.swap.fm/track/v9Uiw3bGr54f6BVZKSyc/traffic.megaphone.fm/CAD8446624365.mp3?updated=1774041362",
+    "published": "2026-03-21T10:00:00+00:00",
+    "title": "Gary Bettman \u2014 Sports Media with Richard Deitsch",
+    "summary": "",
+    "topics": [
+      "Gary Bettman"
+    ],
+    "people": [],
+    "transcript_snippet": "this probably should, should have been anticipated after what we saw with the fourth quarter nations last year in hockey. You know, just some stuff <mark>Gary Bettman</mark> made up one day and you get 9.3 million viewers on cable for it before, I might add, before big data plus panels.",
+    "matched_keyword": "Gary Bettman",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/b90043349f65_240.mp3",
+    "duration": 50.80000000000001,
+    "clip_type": "keyword"
+  },
+  {
     "id": "86747522c05f_99",
     "podcast": "SBJ Morning Buzzcast",
     "artwork": "https://image.simplecastcdn.com/images/df0613a7-f809-4315-8585-6a44edfcc664/5ec9b022-f091-43c1-bb34-48c9b449dd7b/3000x3000/sbj-morningbuzzcast-podcast-icon-3000x3000.jpg?aid=rss_feed",
