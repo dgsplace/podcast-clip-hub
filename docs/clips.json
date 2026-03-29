@@ -1,5 +1,24 @@
 [
   {
+    "id": "6356900a7df5_2257",
+    "podcast": "The Varsity",
+    "artwork": "https://megaphone.imgix.net/podcasts/6fa89856-58b9-11ef-bfa8-af3c1c52a7c5/image/6ee8d61495fe5aa724ebe77cb2c604d7.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "ESPNW\u2019s Growth Engine",
+    "episode_url": "https://pdst.fm/e/tracking.swap.fm/track/v9Uiw3bGr54f6BVZKSyc/pscrb.fm/rss/p/traffic.megaphone.fm/CAD9142802202.mp3?updated=1774640583",
+    "published": "2026-03-29T07:00:00+00:00",
+    "title": "Pat McAfee \u2014 The Varsity",
+    "summary": "",
+    "topics": [
+      "Pat McAfee"
+    ],
+    "people": [],
+    "transcript_snippet": "across our established ecosystem. That means our experts talking about women's sports, that means more Stephen A. Talking about women, women's sports, that means more <mark>Pat McAfee</mark> and SVP talking about women's sports and then continuing to elevate the incredible talent we do have. Andrea Carter, Janae Guma K. Christine",
+    "matched_keyword": "Pat McAfee",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/6356900a7df5_2257.mp3",
+    "duration": 50.64000000000033,
+    "clip_type": "keyword"
+  },
+  {
     "id": "edf3c9ad2cd7_1955",
     "podcast": "Sports Media with Richard Deitsch",
     "artwork": "https://megaphone.imgix.net/podcasts/a81ff0fe-0f94-11e9-adc8-e7fb890b88f4/image/97a1ffd3d951eeb3db936c4811985d60.jpeg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
