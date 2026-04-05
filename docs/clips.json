@@ -1,5 +1,24 @@
 [
   {
+    "id": "469cec4fd1aa_202",
+    "podcast": "The Varsity",
+    "artwork": "https://megaphone.imgix.net/podcasts/6fa89856-58b9-11ef-bfa8-af3c1c52a7c5/image/92333530fea650e5bc260b84e279eac1.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "Mashburn\u2019s N.I.L. Market Theory",
+    "episode_url": "https://pdst.fm/e/tracking.swap.fm/track/v9Uiw3bGr54f6BVZKSyc/pscrb.fm/rss/p/traffic.megaphone.fm/CAD8107593196.mp3?updated=1775248625",
+    "published": "2026-04-05T07:00:00+00:00",
+    "title": "Gary Bettman \u2014 The Varsity",
+    "summary": "",
+    "topics": [
+      "Gary Bettman"
+    ],
+    "people": [],
+    "transcript_snippet": "how TNT Sports employees are keeping their head down amid all the unknowns arising from the Paramount purchase. One example, Luis has been negotiating with <mark>Gary Bettman</mark> about extending their hockey deal. He's in the process of adding new sports to TNT's portfolio. He's overseeing production for the final four",
+    "matched_keyword": "Gary Bettman",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/469cec4fd1aa_202.mp3",
+    "duration": 50.879999999999995,
+    "clip_type": "keyword"
+  },
+  {
     "id": "83049ce239ad_1724",
     "podcast": "Sports Media with Richard Deitsch",
     "artwork": "https://megaphone.imgix.net/podcasts/a81ff0fe-0f94-11e9-adc8-e7fb890b88f4/image/97a1ffd3d951eeb3db936c4811985d60.jpeg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
