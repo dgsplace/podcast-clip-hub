@@ -1,5 +1,24 @@
 [
   {
+    "id": "f5cb234abc9f_678",
+    "podcast": "SBJ Morning Buzzcast",
+    "artwork": "https://image.simplecastcdn.com/images/df0613a7-f809-4315-8585-6a44edfcc664/5ec9b022-f091-43c1-bb34-48c9b449dd7b/3000x3000/sbj-morningbuzzcast-podcast-icon-3000x3000.jpg?aid=rss_feed",
+    "episode": "SBJ Morning Buzzcast: April 16, 2026",
+    "episode_url": "https://sbj-morning-buzzcast.sportsbusinessjournal.com/episodes/sbj-morning-buzzcast-april-16-2026-xONfgiBj",
+    "published": "2026-04-16T11:00:00+00:00",
+    "title": "private equity \u2014 SBJ Morning Buzzcast",
+    "summary": "",
+    "topics": [
+      "private equity"
+    ],
+    "people": [],
+    "transcript_snippet": "to see, you know, what are the growth prospects, what is his outlook and more broadly within sports, Obviously we talk all the time about <mark>private equity</mark> coming into sports. Clearlake has been around it. Igbalia and Jose Feliciano, his partner, have been around a few of the NFL auctions.",
+    "matched_keyword": "private equity",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/f5cb234abc9f_678.mp3",
+    "duration": 50.60000000000002,
+    "clip_type": "keyword"
+  },
+  {
     "id": "9c5c0c5a945c_221",
     "podcast": "SBJ Morning Buzzcast",
     "artwork": "https://image.simplecastcdn.com/images/df0613a7-f809-4315-8585-6a44edfcc664/5ec9b022-f091-43c1-bb34-48c9b449dd7b/3000x3000/sbj-morningbuzzcast-podcast-icon-3000x3000.jpg?aid=rss_feed",
