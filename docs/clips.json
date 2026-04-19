@@ -1,5 +1,24 @@
 [
   {
+    "id": "5d6f68f322e1_2691",
+    "podcast": "The Varsity",
+    "artwork": "https://megaphone.imgix.net/podcasts/6fa89856-58b9-11ef-bfa8-af3c1c52a7c5/image/3e817a0f81040f84c840b7247a2d3ac7.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "The NFL\u2019s Draft Day Fantasy",
+    "episode_url": "https://pdst.fm/e/tracking.swap.fm/track/v9Uiw3bGr54f6BVZKSyc/pscrb.fm/rss/p/traffic.megaphone.fm/CAD9864280536.mp3?updated=1776458659",
+    "published": "2026-04-19T07:01:00+00:00",
+    "title": "Adam Silver \u2014 The Varsity",
+    "summary": "",
+    "topics": [
+      "Adam Silver"
+    ],
+    "people": [],
+    "transcript_snippet": "very seriously that they have spent a lot of time thinking about. And I know they will continue to think about it. And you know, <mark>Adam Silver</mark> has been very public about addressing the tanking issue in the off season. And I think, I think if there's a better product",
+    "matched_keyword": "Adam Silver",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/5d6f68f322e1_2691.mp3",
+    "duration": 50.559999999999945,
+    "clip_type": "keyword"
+  },
+  {
     "id": "cd4487ad19a8_2375",
     "podcast": "Sports Media with Richard Deitsch",
     "artwork": "https://megaphone.imgix.net/podcasts/a81ff0fe-0f94-11e9-adc8-e7fb890b88f4/image/97a1ffd3d951eeb3db936c4811985d60.jpeg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
