@@ -1,5 +1,43 @@
 [
   {
+    "id": "1e5d2c26cb0f_2071",
+    "podcast": "The Bill Simmons Podcast",
+    "artwork": "https://megaphone.imgix.net/podcasts/ca047470-781a-11ea-9a10-cfa05a5eeb3b/image/66bc145613265018e4973f18ef96d931.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "A Magic Upset, a Lakers Surprise, Playoff Wemby, El Cheapo, Bill\u2019s Award Flip, and Other Round 1 Notes With Zach Lowe",
+    "episode_url": "https://pdst.fm/e/traffic.megaphone.fm/GLT3645858920.mp3",
+    "published": "2026-04-20T08:10:00+00:00",
+    "title": "Adam Silver \u2014 The Bill Simmons Podcast",
+    "summary": "",
+    "topics": [
+      "Adam Silver"
+    ],
+    "people": [],
+    "transcript_snippet": "just say Orlando for now. Kudos. Kudos to. Kudos to the Magic. Great showing the last couple of games. I really respect and appreciate what <mark>Adam Silver</mark> in the NBA did staggering out that Lakers Houston series. When's game two? Wednesday. It's going until, like, July, I think. I think",
+    "matched_keyword": "Adam Silver",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/1e5d2c26cb0f_2071.mp3",
+    "duration": 50.76000000000022,
+    "clip_type": "keyword"
+  },
+  {
+    "id": "1e5d2c26cb0f_6168",
+    "podcast": "The Bill Simmons Podcast",
+    "artwork": "https://megaphone.imgix.net/podcasts/ca047470-781a-11ea-9a10-cfa05a5eeb3b/image/66bc145613265018e4973f18ef96d931.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "A Magic Upset, a Lakers Surprise, Playoff Wemby, El Cheapo, Bill\u2019s Award Flip, and Other Round 1 Notes With Zach Lowe",
+    "episode_url": "https://pdst.fm/e/traffic.megaphone.fm/GLT3645858920.mp3",
+    "published": "2026-04-20T08:10:00+00:00",
+    "title": "Adam Silver \u2014 The Bill Simmons Podcast",
+    "summary": "",
+    "topics": [
+      "Adam Silver"
+    ],
+    "people": [],
+    "transcript_snippet": "have the full mid Level, they have the 11th pick in the draft. Unless. Unless. Unless they get a little lucky, they get a little <mark>Adam Silver</mark> fairy dust on the pick and they move up to the top four. 10%. I don't know what you're implying. 10%. Well, I'm",
+    "matched_keyword": "Adam Silver",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/1e5d2c26cb0f_6168.mp3",
+    "duration": 50.840000000000146,
+    "clip_type": "keyword"
+  },
+  {
     "id": "5d6f68f322e1_2691",
     "podcast": "The Varsity",
     "artwork": "https://megaphone.imgix.net/podcasts/6fa89856-58b9-11ef-bfa8-af3c1c52a7c5/image/3e817a0f81040f84c840b7247a2d3ac7.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
