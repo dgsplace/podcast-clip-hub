@@ -1,5 +1,24 @@
 [
   {
+    "id": "f8729ac62a78_1581",
+    "podcast": "The Press Box",
+    "artwork": "https://megaphone.imgix.net/podcasts/922c06a0-782c-11ea-8b28-9333b94098ed/image/44989ce80f0b01f28b5ac5e5f602140b.jpeg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "episode": "More on Vrabel and Russini, the FBI Investigates a Reporter, and Buying Your Way Into the Broadcast Booth",
+    "episode_url": "https://traffic.megaphone.fm/GLT6135391595.mp3?updated=1777008648",
+    "published": "2026-04-24T03:28:00+00:00",
+    "title": "Pat McAfee \u2014 The Press Box",
+    "summary": "",
+    "topics": [
+      "Pat McAfee"
+    ],
+    "people": [],
+    "transcript_snippet": "Because the NFL Network is now owned by espn. That's kind of funny. Peter Schrager, who will be on one of those, or maybe the <mark>Pat McAfee</mark> pirate radio streaming telecast, which is actually a fourth ESPN draft cast, made a plea about the NFL draft the other day. Here's",
+    "matched_keyword": "Pat McAfee",
+    "audio_url": "https://pub-b3c02c193e1b42cb89dd1767007913a5.r2.dev/clips/f8729ac62a78_1581.mp3",
+    "duration": 51.0,
+    "clip_type": "keyword"
+  },
+  {
     "id": "5bd5f65d9269_558",
     "podcast": "SBJ Morning Buzzcast",
     "artwork": "https://image.simplecastcdn.com/images/df0613a7-f809-4315-8585-6a44edfcc664/5ec9b022-f091-43c1-bb34-48c9b449dd7b/3000x3000/sbj-morningbuzzcast-podcast-icon-3000x3000.jpg?aid=rss_feed",
